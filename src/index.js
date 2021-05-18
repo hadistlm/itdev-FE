@@ -1,13 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+
+/* Important Style Packages */
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./assets/css/style.css";
+import "./assets/css/components.css";
+
+/* Plugin Packages */
+import "@fortawesome/fontawesome-free/css/all.css";
+
+import $ from 'jquery';
+import '@popperjs/core';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'jquery.nicescroll/dist/jquery.nicescroll';
+
+// Main Course
+import App from './App';
+
+// require("bootstrap/dist/js/bootstrap.bundle.min.js");
+// require("jquery/dist/jquery.min.js");
+// require("jquery.nicescroll/dist/jquery.nicescroll.js");
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <App /> {/* The various pages will be displayed by the `Main` component. */}
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
