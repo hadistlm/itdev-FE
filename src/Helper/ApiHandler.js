@@ -1,14 +1,19 @@
 export default class ApiHandler {
   constructor(options) {
-    this.baseUrl = options.baseUrl
+    this.baseUrl = (options !== undefined) ? options.baseUrl : 'http://localhost:3000';
   }
 
   post(endpoint, params, headers = null) {
     return this.requestHttp('POST', this.baseUrl + endpoint, params, headers)
   }
 
-  get(endpoint, headers = null) {
-    return this.requestHttp('GET', this.baseUrl + endpoint, null, headers)
+  get(endpoint, params, headers = null) {
+    const query = Object
+      .keys(params)
+      .map(value => `${value}=${encodeURIComponent(params[value])}`)
+      .join('&');
+
+    return this.requestHttp('GET', `${this.baseUrl}${endpoint}?${query}`, null, headers)
   }
 
   put(endpoint, params, headers = null) {

@@ -1,17 +1,21 @@
 import React from 'react';
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import moment from 'moment';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { Row, Col, Card, Button, Modal, Form, Table } from 'react-bootstrap';
 
-import moment from 'moment'
+import ApiHandler from '../../Helper/ApiHandler';
+import Pagination from '../../Helper/Pagination';
 
 class Scheduler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: 1,
+      perPage: 10,
+      currentPage: null, 
+      totalPages: null,
       show: false,
-      close: false,
-      error: null,
       isLoaded: false,
       method: [{
         type: 'create',
@@ -19,7 +23,8 @@ class Scheduler extends React.Component {
       }],
       var_name: '',
       var_text: '',
-      items: []
+      items: [],
+      items_total: 0
     };
 
     this.form = React.createRef();
@@ -31,26 +36,27 @@ class Scheduler extends React.Component {
   }
 
   retrieveData(){
-    fetch("http://localhost:3000/variable/list")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
+    const data = new ApiHandler()
+      .get('/variable/list', {
+        perpage: this.state.perPage,
+        page: this.state.page
+      })
+      .then((response) => {
+        if (response.statusCode == 200) {
+          let result = response.body.data;
+
           this.setState({
             isLoaded: true,
-            items: result.data
+            items: result.rows,
+            items_total: result.count
           });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
+        }else{
           this.setState({
             isLoaded: true,
-            error
+            response
           });
         }
-      )
+      })
   }
 
   handleCreate(){
@@ -163,21 +169,43 @@ class Scheduler extends React.Component {
       .then(() => state.retrieveData());
   }
 
+  handleTable(event){
+    const lengthPages = Math.ceil(this.state.items_total / event.target.value);
+
+    this.setState({ 
+      page : (this.state.page > lengthPages) ? 1 : this.state.page,
+      [event.target.name] : event.target.value
+    }, () => {
+      this.retrieveData();
+    });
+  }
+
+  onPageChanged(data){
+    const { currentPage, totalPages, pageLimit } = data;
+
+    this.setState({ page : currentPage }, () => {
+      this.retrieveData();
+    });
+  }
+
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { isLoaded, page, perPage, items, items_total } = this.state;
+    let number = ((page - 1) * perPage) + 1;
+
+    if (!isLoaded || items_total === 0) return null;
 
     return (
       <div className="main-content">
         <section className="section">
           <Row>
-            <Col xs={1}>
+            <Col md={1}>
               <div className="card card-statistic-1">
                 <div className="card-icon bg-danger" style={{width: "65%"}}>
                   <i className="far fa-user"></i>
                 </div>
               </div>
             </Col>
-            <Col xs={11} className="section-header" style={{marginBottom : "35px"}}>
+            <Col md={11} className="section-header" style={{marginBottom : "35px"}}>
               <Row>
                 <h1>Variable Management</h1>
                 <small>Managing your variable format for messaging</small>
@@ -188,40 +216,24 @@ class Scheduler extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
+            <Col md={12}>
               <Card>
                 <Card.Body className="p-2">
                   <Row>
-                    <Col md={2}>
+                    <Col md={{ span: 1, offset: 9 }}>
                       <div className="form-group">
-                        <select className="form-control form-control-sm">
-                          <option>All</option>
-                          <option>Preparation</option>
-                          <option>Processing</option>
-                          <option>Failed</option>
-                          <option>Finish</option>
+                        <select name="perPage" value={this.state.perPage} onChange={this.handleTable.bind(this)} className="form-control form-control-sm">
+                          <option value='10'>10</option>
+                          <option value='25'>25</option>
+                          <option value='50'>50</option>
+                          <option value='100'>100</option>
                         </select>
                       </div>
                     </Col>
                     <Col md={2}>
-                      <div className="form-group">
-                        <input type="date" className="form-control" />
-                      </div>
-                    </Col>
-
-                    <Col md={{ span: 1, offset: 5 }}>
-                      <div className="form-group">
-                        <select className="form-control form-control-sm">
-                          <option>10</option>
-                          <option>15</option>
-                          <option>25</option>
-                        </select>
-                      </div>
-                    </Col>
-                    <Col md={2}>
-                      <div className="form-group">
-                        <input type="text" placeholder="Search ..." className="form-control" />
-                      </div>
+                      <Form.Group>
+                        <Form.Control type="text" placeholder="Search ..." />
+                      </Form.Group>
                     </Col>
                   </Row>
                   <Row>
@@ -238,7 +250,7 @@ class Scheduler extends React.Component {
                       <tbody>
                         {Object.entries(items).map(([key,item]) => (
                           <tr>
-                            <td>{key}</td>
+                            <td>{number++}</td>
                             <td>{item.variable_name}</td>
                             <td>{item.variable_element}</td>
                             <td>{moment(item.updatedAt).format('lll')}</td>
@@ -247,6 +259,9 @@ class Scheduler extends React.Component {
                         ))}
                       </tbody>
                     </Table>
+                    <Col md={12} className="d-flex flex-row-reverse">
+                      <Pagination totalRecords={items_total} pageLimit={Number(perPage)} pageNeighbours={1} onPageChanged={this.onPageChanged.bind(this)} />
+                    </Col>
                   </Row>
                 </Card.Body>
               </Card>
