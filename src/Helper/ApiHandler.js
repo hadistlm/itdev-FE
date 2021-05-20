@@ -1,6 +1,6 @@
 export default class ApiHandler {
   constructor(options) {
-    this.baseUrl = (options !== undefined) ? options.baseUrl : 'http://localhost:3000';
+    this.baseUrl = (options !== undefined) ? options.baseUrl : 'http://localhost:3000/api/v1';
   }
 
   post(endpoint, params, headers = null) {

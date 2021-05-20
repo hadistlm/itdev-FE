@@ -49,8 +49,8 @@ class Scheduler extends React.Component {
 
           this.setState({
             isLoaded: true,
-            items: result.rows,
-            items_total: result.count
+            items: result.data,
+            items_total: result.meta.total
           });
         }else{
           this.setState({
@@ -77,7 +77,7 @@ class Scheduler extends React.Component {
     const event = this;
     const SwalReact = withReactContent(Swal);
 
-    fetch(`http://localhost:3000/variable/find/${id}`)
+    fetch(`http://localhost:3000/api/v1/variable/find/${id}`)
       .then(response => response.json())
       .then(data => {
         if (data.status == 'success') {
@@ -122,7 +122,7 @@ class Scheduler extends React.Component {
 
     switch (this.state.method[0].type) {
       case 'edit':
-        var url = `http://localhost:3000/variable/edit/${this.state.method[0].last_id}`;
+        var url = `http://localhost:3000/api/v1/variable/edit/${this.state.method[0].last_id}`;
         var requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -134,7 +134,7 @@ class Scheduler extends React.Component {
       break;
 
       default:
-        var url = 'http://localhost:3000/variable/create';
+        var url = 'http://localhost:3000/api/v1/variable/create';
         var requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -194,7 +194,7 @@ class Scheduler extends React.Component {
     const { isLoaded, page, perPage, items, items_total } = this.state;
     let number = ((page - 1) * perPage) + 1;
 
-    if (!isLoaded) return null;
+    if (!isLoaded || typeof items_total === 'undefined') return null;
 
     return (
       <div className="main-content">
