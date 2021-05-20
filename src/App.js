@@ -9,6 +9,7 @@ class App extends React.Component {
 	    	<Header />
     		<Sidebar />
 	    	<Main />
+	    	<Footer />
 			</div>
     );
   }
