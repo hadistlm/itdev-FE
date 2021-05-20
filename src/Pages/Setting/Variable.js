@@ -1,8 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { Row, Col, Card, Button, Modal, Form, Table } from 'react-bootstrap';
+
+import withReactContent from 'sweetalert2-react-content';
+import { DebounceInput } from 'react-debounce-input';
 
 import ApiHandler from '../../Helper/ApiHandler';
 import Pagination from '../../Helper/Pagination';
@@ -13,8 +15,7 @@ class Scheduler extends React.Component {
     this.state = {
       page: 1,
       perPage: 10,
-      currentPage: null, 
-      totalPages: null,
+      searchData: '',
       show: false,
       isLoaded: false,
       method: [{
@@ -39,7 +40,8 @@ class Scheduler extends React.Component {
     const data = new ApiHandler()
       .get('/variable/list', {
         perpage: this.state.perPage,
-        page: this.state.page
+        page: this.state.page,
+        search: this.state.searchData
       })
       .then((response) => {
         if (response.statusCode == 200) {
@@ -170,7 +172,7 @@ class Scheduler extends React.Component {
   }
 
   handleTable(event){
-    const lengthPages = Math.ceil(this.state.items_total / event.target.value);
+    const lengthPages = (event.target.type !== 'text') ? Math.ceil(this.state.items_total / event.target.value) : 0;
 
     this.setState({ 
       page : (this.state.page > lengthPages) ? 1 : this.state.page,
@@ -192,7 +194,7 @@ class Scheduler extends React.Component {
     const { isLoaded, page, perPage, items, items_total } = this.state;
     let number = ((page - 1) * perPage) + 1;
 
-    if (!isLoaded || items_total === 0) return null;
+    if (!isLoaded) return null;
 
     return (
       <div className="main-content">
@@ -220,7 +222,7 @@ class Scheduler extends React.Component {
               <Card>
                 <Card.Body className="p-2">
                   <Row>
-                    <Col md={{ span: 1, offset: 9 }}>
+                    <Col md={{ span: 1, offset: 8 }}>
                       <div className="form-group">
                         <select name="perPage" value={this.state.perPage} onChange={this.handleTable.bind(this)} className="form-control form-control-sm">
                           <option value='10'>10</option>
@@ -230,9 +232,16 @@ class Scheduler extends React.Component {
                         </select>
                       </div>
                     </Col>
-                    <Col md={2}>
+                    <Col md={3}>
                       <Form.Group>
-                        <Form.Control type="text" placeholder="Search ..." />
+                        <DebounceInput
+                          name="searchData" 
+                          value={this.state.searchData}
+                          debounceTimeout={300}
+                          onChange={this.handleTable.bind(this)} 
+                          placeholder="Search ..."
+                          className="form-control"
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -248,6 +257,11 @@ class Scheduler extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
+                        {items_total === 0 &&
+                          <tr>
+                            <td colSpan="5" className="text-center">Data Not Found.</td>
+                          </tr>
+                        }
                         {Object.entries(items).map(([key,item]) => (
                           <tr>
                             <td>{number++}</td>
