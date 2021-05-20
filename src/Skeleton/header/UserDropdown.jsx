@@ -5,11 +5,13 @@ export class UserDropdown extends Component {
   render() {
     const { userDetail } = this.props;
     return (
-      <li className="dropdown">
-        <a
-          href="#"
-          data-toggle="dropdown"
-          className="nav-link dropdown-toggle nav-link-lg nav-link-user"
+      <div>
+        <a 
+          class="nav-link dropdown-toggle nav-link-lg nav-link-user" 
+          data-bs-toggle="dropdown" 
+          data-bs-display="static" 
+          aria-expanded="false"
+          style={{cursor:'pointer'}}
         >
           <img
             alt="image"
@@ -20,11 +22,10 @@ export class UserDropdown extends Component {
             Hi, {userDetail.userName}
           </div>
         </a>
-        <div className="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-lg-end">
           <div className="dropdown-title">
             Logged in {userDetail.logTime} ago
           </div>
-
           {userDetail.datas.map((data, idata) => {
             return (
               <NavLink
@@ -40,7 +41,6 @@ export class UserDropdown extends Component {
               </NavLink>
             );
           })}
-
           <div className="dropdown-divider" />
           <a
             href="#"
@@ -54,7 +54,7 @@ export class UserDropdown extends Component {
             <i className={userDetail.logoutIcon} /> {userDetail.logoutTitle}
           </a>
         </div>
-      </li>
+      </div>
     );
   }
 }
