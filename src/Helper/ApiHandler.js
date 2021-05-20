@@ -1,6 +1,8 @@
+import { config } from '../Environment/config';
+
 export default class ApiHandler {
   constructor(options) {
-    this.baseUrl = (options !== undefined) ? options.baseUrl : 'http://localhost:3000/api/v1';
+    this.baseUrl = (options !== undefined) ? options.baseUrl : config.baseURL;
   }
 
   post(endpoint, params, headers = null) {
