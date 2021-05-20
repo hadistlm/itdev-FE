@@ -7,7 +7,7 @@ export class UserDropdown extends Component {
     return (
       <div>
         <a 
-          class="nav-link dropdown-toggle nav-link-lg nav-link-user" 
+          className="nav-link dropdown-toggle nav-link-lg nav-link-user" 
           data-bs-toggle="dropdown" 
           data-bs-display="static" 
           aria-expanded="false"
@@ -22,7 +22,7 @@ export class UserDropdown extends Component {
             Hi, {userDetail.userName}
           </div>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg-end">
+        <div className="dropdown-menu dropdown-menu-lg-end">
           <div className="dropdown-title">
             Logged in {userDetail.logTime} ago
           </div>

@@ -19,7 +19,7 @@ const Header = () => {
             </ul>
           </form>
 
-          <div class="btn-group">
+          <div className="btn-group">
             <UserDropdown userDetail={userDetail} />
           </div>
         </div>
