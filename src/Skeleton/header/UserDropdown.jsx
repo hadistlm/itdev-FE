@@ -17,7 +17,7 @@ export class UserDropdown extends Component {
             alt="image"
             src={userDetail.userImg}
             className="rounded-circle mr-1"
-          />
+          />{' '}
           <div className="d-sm-none d-lg-inline-block">
             Hi, {userDetail.userName}
           </div>
