@@ -1,0 +1,526 @@
+a:link {
+  text-decoration: none !important;
+}
+
+.text-center{
+  text-align: center !important;
+}
+.navbar-bg {
+  height: 65px !important;
+}
+
+.MuiAppBar-colorPrimary{
+  background: rgb(225 23 21) !important;
+}
+
+.no-margin{
+  margin: 0px !important;
+}
+
+.no-radius{
+  border-radius: 0px !important;
+}
+
+.no-margin-bottom{
+  margin-bottom: 0px !important;
+}
+
+.no-margin-top{
+  margin-top: 0px !important;
+}
+
+.no-margin-left{
+  margin-left: 0px !important;
+}
+
+.no-margin-right{
+  margin-right: 0px !important;
+}
+
+.no-padding{
+  padding: 0px !important;
+}
+
+.no-padding-bottom{
+  padding-bottom: 0px !important;
+}
+
+.no-padding-top{
+  padding-top: 0px !important;
+}
+
+.no-padding-left{
+  padding-left: 0px !important;
+}
+
+.no-padding-right{
+  padding-right: 0px !important;
+}
+
+.ic-tab-left{
+  position:absolute;
+  left: 5px;
+}
+
+.MuiTab-labelIcon{
+  min-height: 50px !important;
+}
+
+.myPaper{
+  padding: 15px;
+  position: relative;
+}
+
+.myBox,.myBox-l,.myBox-r{
+  padding: 15px;
+  position: relative;
+  border-left: 3px solid #ccc;
+}
+
+.box-title{
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.mySelect{
+  min-width: 120px !important;
+  text-align: left !important;
+  font-size: 12px !important;  
+}
+
+.myInput{
+  min-width: 140px !important;
+  text-align: left !important;
+}
+
+.mySelect input,.myInput input{
+  font-size: 13px !important;
+  height: 20px !important;
+  padding-top: 0px !important;
+}
+
+.myInputArea textarea{
+  font-size: 13px !important;
+  padding-top: 0px !important;  
+}
+
+.mySelect .myLabel,.myInput .myLabel,.myInputArea .myLabel{
+  font-size: 14px !important;
+  height-top: 10px !important;
+  height-bottom: 10px !important;
+  margin-bottom: 10px !important;
+  font-weight: bolder !important;
+}
+
+.mySelect .MuiInput-input{
+    /*border: 1px solid #A6c1D3;*/
+    /*border-radius: 4px;*/
+    /*padding-left: 15px;*/
+    font-size: 13px !important;
+    height: 20px !important;
+}
+
+.mySelect .MuiOutlinedInput-adornedEnd,.myInput .MuiOutlinedInput-adornedEnd {
+    padding-right: 5px;
+}
+
+.mySelect .MuiSelect-select.MuiSelect-select {
+    font-size: 13px !important;
+    padding-top: 5px !important;
+    padding-bottom: 8px !important;
+}
+
+
+.mySelect .MuiOutlinedInput-root,.myInput .MuiOutlinedInput-root{
+    height: 30px !important;
+}
+
+.mySelect .MuiOutlinedInput-inputMarginDense{
+  padding-top: 12px !important;
+}
+
+.myInput .MuiOutlinedInput-inputMarginDense{
+  padding-top: 5px !important;
+}
+
+
+.mySelect .MuiInputLabel-outlined.MuiInputLabel-marginDense,.myInput .MuiInputLabel-outlined.MuiInputLabel-marginDense {
+    transform: translate(14px, 8px) scale(1);
+}
+
+.mySelect .MuiInputLabel-outlined.MuiInputLabel-shrink,.myInput .MuiInputLabel-outlined.MuiInputLabel-shrink {
+    transform: translate(0px, -15px) scale(0.75);
+  }
+
+.mySelect .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline,.myInput .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #ED2B2E !important;
+}
+
+.myInput label,.mySelect label{
+   font-size: 12px !important;  
+}
+
+.myBox-l{
+  border-left: 1px solid #fff !important;
+}
+
+.myBox-r{
+  border-right: 1px solid #fff !important;
+}
+
+.myPaper .title{
+  position: relative;
+  font-weight: bolder;
+  font-size: 14px;
+  color: #000 !important;
+  z-index: 10;
+}
+
+.myPaper .subtitle{
+  position: relative;
+  font-weight: normal;
+  font-size: 12px;
+  color: #000 !important;
+  z-index: 10;
+}
+
+.myPaper .label{
+  font-weight: bolder;
+  font-size: 24px;
+  min-width: 120px;
+  text-align: right;
+  padding:10px;
+  position: absolute;
+  top:0;
+  right: 0;
+  z-index: 10;
+}
+
+.myPaper .bg-ic{
+  font-size: 60px;
+  position: absolute;
+  top:0;
+  left:0;
+  opacity: 0.1;
+  z-index: 0;
+  transform: rotate(-15deg);
+}
+
+.myCard{
+  margin-bottom: 10px !important;
+}
+
+.MuiLinearProgress-barColorPrimary {
+    background-color: #3f51b5;
+}
+
+.cl-pending{
+  color: #67b7dc !important;
+}
+.cl-success{
+  color: #4caf50 !important;
+}
+.cl-failed{
+  color: #dc6967 !important;
+}
+
+.bcl-pending{
+  border-color: #67b7dc !important;
+}
+.bcl-success{
+  border-color: #4caf50 !important;
+}
+.bcl-failed{
+  border-color: #dc6967 !important;
+}
+
+.my-input-width{
+  min-width: 240px !important;
+}
+
+.my-btn{
+  height: 40px !important;
+  min-width: 185px !important;  
+  border-radius: 4px !important;  
+  padding: 12px 16px 12px 16px;
+  text-transform: none !important;
+  box-shadow: none !important;  
+  position:relative !important; 
+  font-weight: 700 !important; 
+}
+
+.my-btn .ic_left{
+    position:absolute;
+    left:15px;
+    top:0;
+    bottom: 0;
+    margin:auto;
+}
+
+.my-btn.bg-pending,.my-btn.bg-success,.my-btn.bg-failed,.my-btn.bg-dark,.my-btn.bg-red{
+  color: #ffffff;
+}
+
+.my-btn.bg-light{
+  border:1px solid #ED2B2E !important;
+  color: #ED2B2E;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.bg-light{
+  background: #ffffff !important;
+}
+
+.bg-light-blue{
+  background: #00C6FF !important;
+}
+.cl-light-blue{
+  color: #00C6FF !important;
+}
+
+.my-btn.bg-light-blue{
+  border:1px solid #00C6FF !important;
+  color: #00C6FF;
+  background: #fff !important;  
+}
+
+.bg-red{
+  background: #ED2B2E !important;
+}
+
+.bg-pending{
+  background: #67b7dc !important;
+}
+.bg-success{
+  background: #4caf50 !important;
+}
+.bg-failed{
+  background: #dc6967 !important;
+}
+
+.bg-dark{
+  background: #444 !important;
+  color:#fff !important;
+}
+
+.bg-dark tspan{
+  color:#fff !important; 
+}
+
+.bg1,.myPaper.cl1 .MuiLinearProgress-barColorPrimary,.myPaper.bg1 .MuiLinearProgress-barColorPrimary {
+  background:#EABF0A !important;
+}
+.bg2,.myPaper.cl2 .MuiLinearProgress-barColorPrimary,.myPaper.bg2 .MuiLinearProgress-barColorPrimary {
+  background:#E0790A !important;
+}
+.bg3,.myPaper.cl3 .MuiLinearProgress-barColorPrimary,.myPaper.bg3 .MuiLinearProgress-barColorPrimary {
+  background:#CE0909 !important;
+}
+.bg4,.myPaper.cl4 .MuiLinearProgress-barColorPrimary,.myPaper.bg4 .MuiLinearProgress-barColorPrimary {
+  background:#A7D26D !important;
+}
+.bg5,.myPaper.cl5 .MuiLinearProgress-barColorPrimary,.myPaper.bg5 .MuiLinearProgress-barColorPrimary {
+  background:#39B54A !important;
+}
+.bg6,.myPaper.cl6 .MuiLinearProgress-barColorPrimary,.myPaper.bg6 .MuiLinearProgress-barColorPrimary {
+  background:#009245 !important;
+}
+
+.myPaper.cl1 .MuiLinearProgress-colorPrimary,.myPaper.bg1 .MuiLinearProgress-colorPrimary{
+  background: rgba(234, 191, 10, 0.2) !important;
+}
+.myPaper.cl2 .MuiLinearProgress-colorPrimary,.myPaper.bg2 .MuiLinearProgress-colorPrimary{
+  background: rgba(224, 121, 10, 0.2) !important;
+}
+.myPaper.cl3 .MuiLinearProgress-colorPrimary,.myPaper.bg3 .MuiLinearProgress-colorPrimary{
+  background: rgba(206, 9, 9, 0.2) !important;
+}
+.myPaper.cl4 .MuiLinearProgress-colorPrimary,.myPaper.bg4 .MuiLinearProgress-colorPrimary{
+  background: rgba(167, 210, 109, 0.2) !important;
+}
+.myPaper.cl5 .MuiLinearProgress-colorPrimary,.myPaper.bg5 .MuiLinearProgress-colorPrimary{
+  background: rgba(167, 210, 109, 0.2) !important;
+}
+.myPaper.cl6 .MuiLinearProgress-colorPrimary,.myPaper.bg6 .MuiLinearProgress-colorPrimary{
+  background: rgba(0, 146, 69, 0.2) !important;
+}
+
+.myPaper .subtitle b{
+  font-size: 14px;
+}
+
+.cl1,.myPaper.cl1 .subtitle b{
+  color:#EABF0A !important;
+}
+.cl2,.myPaper.cl2 .subtitle b{
+  color:#E0790A !important;
+}
+.cl3,.myPaper.cl3 .subtitle b{
+  color:#CE0909 !important;
+}
+.cl4,.myPaper.cl4 .subtitle b{
+  color:#A7D26D !important;
+}
+.cl5,.myPaper.cl5 .subtitle b{
+  color:#39B54A !important;
+}
+.cl6,.myPaper.cl6 .subtitle b{
+  color:#009245 !important;
+}
+
+.myPaper .status .MuiGrid-item{
+  text-align: center;
+  margin-top: 10px;
+}
+
+.myPaper .status .MuiGrid-item .subtitle{
+  color: #777 !important;
+}
+
+.myPaper .status .MuiGrid-item .title{
+  color: #777 !important;
+}
+
+.ic_title{
+  height: 60px;
+  width: 60px;
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.ic_title .ic_title_content{
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  text-align: center;
+  padding: 5px;
+  position: relative;
+}
+
+.ic_title .ic_title_content .ic_icon{
+  font-size: 46px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.ic_title .ic_title_content .ic_subicon{
+  font-size: 14px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+.page_title{
+  font-weight: bolder;
+  font-size: 24px;
+  color: #333;
+}
+
+.page_subtitle{
+  font-size: 16px;
+}
+
+.cutomCell{
+  position: relative;
+}
+
+.cutomCell .MuiButtonGroup-root{
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+.cutomCell .cellIcon{
+  float: left;
+  color:#ccc;
+  position: relative;
+  top:0;
+  bottom:0;
+  margin: auto;
+  margin-right: 5px;
+}
+
+.cutomCell .cellTitle{
+  font-weight: normal;
+}
+
+.cutomCell .cellSubTitle{
+  font-size: 10px;
+  font-weight: normal;
+  color:#aaa;
+}
+
+.myLayout .MuiToolbar-regular {
+  min-height: 0px !important; 
+  transition:1s;
+}
+
+.myLayout .MuiPaper-elevation1 {
+    box-shadow: none !important;
+}
+
+.myLayout .makeStyles-root-5 .MuiPaper-root{
+  border-top: 1px solid #ccc !important;
+  border-radius: 0px !important;
+}
+
+.mySympleTable,.mySympleTable tr th,.mySympleTable tr td{
+  border: 1px solid #ccc;
+}
+
+.mySympleTable thead tr th{
+  background: #EEF2F7 !important;
+  font-weight: bolder;
+
+}
+
+.myTableBolder{
+  font-weight: bolder !important;
+}
+
+.myBtn-clear{
+  border: none !important;
+  background: none !important;
+}
+
+
+.btn-daterange{
+  margin-top: -5px !important;
+}
+
+.pagination-right{
+  height: 40px !important;
+}
+
+.pagination-right nav{
+  float: right !important;
+}
+
+.myHidden{
+  display: none !important;
+}
+.myInvisible{
+  opacity: 0 !important;
+}
+.myRowsPerPage{
+   padding-top:15px;   
+}
+
+.myRowsPerPage .mySelect{
+   min-width: 90px !important; 
+}
+
+.myRowsPerPage .titleSelect{
+   padding-top: 7px;
+   padding-right: 7px; 
+   float: left;
+}
+

@@ -1,6 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import Messaging from "../../Pages/Messaging/Messaging";
+import Statistics from "../../Pages/Statistics/Statistics";
+import Form from "../../Pages/Form/Form";
+
 const Dashboard = React.lazy(() => import('../../Pages/Dashboard/Dashboard'));
 const Testing = React.lazy(() => import('../../Pages/Testing'));
 
@@ -31,6 +35,15 @@ const Main = () => {
 	  		<Route exact path='/setting/contact/group/list' component={ContactGroup}></Route>
 	  		<Route exact path='/setting/contact/group/form' component={ContactGroupForm}></Route>
 	      <Route exact path='/setting/variable' component={Variable}></Route>
+
+
+	      <Route exact key="page_statistics" path='/oca/statistics' component={Statistics}/>
+	      <Route exact key="page_sms" path='/oca/sms' component={Messaging}/>
+	      <Route exact key="page_email" path='/oca/email' component={Messaging}/>
+	      <Route exact key="page_whatsapp" path='/oca/whatsapp' component={Messaging}/>
+	      <Route exact key="page_form_sms" path='/oca/sms/form' component={Form}/>
+	      <Route exact key="page_form_email" path='/oca/email/form' component={Form}/>
+	      <Route exact key="page_form_whatsapp" path='/oca/whatsapp/form' component={Form}/>
 	    </Switch>
     </React.Suspense>
   );
