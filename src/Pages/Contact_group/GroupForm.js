@@ -18,6 +18,21 @@ class GroupForm extends React.Component {
     };
   }
 
+  handleNavigation(method = 'next'){
+    const page_list = ['form','review','complete'];
+    let current = page_list.indexOf(this.state.page);
+
+    if (method === 'next') {
+      this.setState({
+        page: (current <= 2) ? page_list[current+=1] : 'complete'
+      });
+    }else{
+      this.setState({
+        page: (current >= 1) ?page_list[current-=1] : 'form'
+      });
+    }
+  }
+
   render() {
     const { page, type } = this.state;
 
@@ -110,8 +125,8 @@ class GroupForm extends React.Component {
                     </Row>
                     <Row style={{display: page == 'complete' ? 'none' : 'block'}}>
                       <Col md={{span:4, offset:8}} className="d-flex justify-content-end">
-                        <Button variant="outline-danger">Kembali</Button>{' '}
-                        <Button variant="secondary" style={{marginLeft:'5px'}}>Selanjutnya</Button>
+                        <Button variant="outline-danger" onClick={this.handleNavigation.bind(this, 'previous')}>Kembali</Button>{' '}
+                        <Button variant="secondary" style={{marginLeft:'5px'}} onClick={this.handleNavigation.bind(this, 'next')}>Selanjutnya</Button>
                       </Col>
                     </Row>
                   </Card.Body>

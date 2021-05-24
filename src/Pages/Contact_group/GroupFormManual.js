@@ -8,39 +8,147 @@ class GroupFormManual extends React.Component {
     super(props);
     this.state = {
       show: false,
-      input: null
+      tableHeader: [' ', 'Name', 'Phone Number'],
+      columnType: ['Collect Number','Email','Nomor Indihome','Record Speech'],
+      selectedData: [],
+      tableData: [{
+        name: '',
+        phone_number:''
+      }]
     };
   }
 
+  handleSelected(){
+    const { selectedData, tableData } = this.state;
+    const whitelist = tableData.filter((i,k) => !selectedData.includes(k))
+
+    this.setState({
+      selectedData: [],
+      tableData:whitelist
+    });
+  }
+
+  handleRow(){
+    let { tableData, tableHeader } = this.state;
+    let tempHeader = [...tableHeader],
+        tmpHolder = {};
+
+    // remove first object data record
+    tempHeader.shift()
+
+    // make the available header list
+    tempHeader.map(value => {
+      Object.assign(tmpHolder, { [value.toLowerCase().replaceAll(" ", "_")]: '' });
+    })
+
+    // update state data
+    tableData.push(tmpHolder);
+
+    // re-render element
+    this.forceUpdate();
+  }
+
+  handleField(event){
+    const selected = this.refs.addtional_field.value;
+    let { 
+      columnType, 
+      tableHeader,
+      tableData
+    } = this.state;
+
+    switch (event) {
+      case 'delete':
+        if (tableHeader.slice(-1)[0] !== 'Phone Number') {
+          tableHeader.pop();
+
+          // delete object properties
+          tableData.map((v,k) => {
+            delete tableData[k][columnType[selected]]
+          });
+
+          // re-render element
+          this.forceUpdate();
+        }
+      break;
+
+      case 'add':
+      default:
+        if (typeof columnType[selected] !== 'undefined' && !tableHeader.includes(columnType[selected])) {
+          tableHeader.push(columnType[selected]);
+          // add new object properties
+          tableData.map((v,k) => {
+            tableData[k][columnType[selected]] = ''
+          });
+          // re-render element
+          this.forceUpdate();
+        }
+      break;
+    }
+  }
+
+  handleSubmit(event){
+    event.preventDefault();
+    // retrieve list of column Type
+    let list = this.state.columnType;
+    // push new column data
+    if (this.refs.column_name.value) {
+      list.push(this.refs.column_name.value);
+    }
+    // close modal
+    this.setState({show:false});
+  }
+
+  handleInputChange(index, event){
+    const status = event.target.checked;
+
+    if (status && !this.state.selectedData.includes(index)) {
+      this.state.selectedData.push(index)
+    }else{
+      this.state.selectedData.splice(this.state.selectedData.indexOf(index), 1);
+    }
+  }
+
+  handleContent(columnName, rowIndex, event){
+    const { tableData } = this.state;
+    const selectedColumn = columnName.toLowerCase().replaceAll(" ", "_");
+
+    tableData[rowIndex][selectedColumn] = event.target.textContent;
+  }
+
   render() {
-    const { show } = this.state;
+    const { show, tableHeader, tableData, columnType } = this.state;
+
     return (
       <div>
         <Row>
-          <Col md={{span:2,offset:10}} className="mb-2">
-            <Button variant="outline-info" className="float-end">Insert new row</Button>
+          <Col md={{span:8,offset:4}} className="mb-2">
+            <Button variant="outline-success" className="float-end" style={{marginLeft:'5px'}} onClick={(e) => {this.setState({show:true})}}>Create New Field</Button>
+            <Button variant="outline-info" className="float-end" style={{marginLeft:'5px'}} onClick={this.handleRow.bind(this)}>Insert new row</Button>
+            <Button variant="outline-danger" className="float-end" onClick={this.handleSelected.bind(this)}>Delete selected row</Button>
           </Col>
           
           <Col md={12}>
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th style={{width:'20px'}}></th>
-                  <th style={{width:'150px'}}>Name</th>
-                  <th style={{width:'150px'}}>Phone Number</th>
-                  <th style={{width:'150px'}}>
+                  {tableHeader.map((value, key) => (
+                    <th key={key} style={{width: (key < 1) ? '20px' : '150px'}}>{value}</th>
+                  ))}
+                  <th style={{width:'25%'}}>
                     <Row>
-                      <Col md={10} className="p-0">
-                        <select className="form-select" defaultValue="Choose a Field">
+                      <Col md={2} className="p-1" onClick={this.handleField.bind(this, 'delete')}>
+                        <i className="fas fa-minus-circle text-danger" style={{fontSize:'2em', 'cursor':'pointer'}}></i>
+                      </Col>
+                      <Col md={8} className="p-0">
+                        <select ref="addtional_field" className="form-select" defaultValue="Choose a Field">
                           <option disabled>Choose a Field</option>
-                          <hr/>
-                          <option value="1">Collect Number</option>
-                          <option value="2">Email</option>
-                          <option value="3">Nomor Indihome</option>
-                          <option value="3">Record Speech</option>
+                          <option disabled>──────────</option>
+                          {columnType.map((value, key) => (
+                            <option key={key} value={columnType.indexOf(value)}>{value}</option>
+                          ))}
                         </select>
                       </Col>
-                      <Col md={1} className="p-1" onClick={(e) => {this.setState({show:true})}}>
+                      <Col md={1} className="p-1" onClick={this.handleField.bind(this, 'add')}>
                         <i className="fas fa-plus-circle text-success" style={{fontSize:'2em', 'cursor':'pointer'}}></i>
                       </Col>
                     </Row>
@@ -48,72 +156,77 @@ class GroupFormManual extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <div className="form-check">
-                      <input className="form-check-input" type="checkbox" value=""/>
-                    </div>
-                  </td>
-                  <td contentEditable="true" suppressContentEditableWarning={true}>Mark</td>
-                  <td contentEditable="true" suppressContentEditableWarning={true}>Otto</td>
-                  <td contentEditable="true" suppressContentEditableWarning={true}>@mdo</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="form-check">
-                      <input className="form-check-input" type="checkbox" value=""/>
-                    </div>
-                  </td>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="form-check">
-                      <input className="form-check-input" type="checkbox" value=""/>
-                    </div>
-                  </td>
-                  <td colSpan="2">Larry the Bird</td>
-                  <td>@twitter</td>
-                </tr>
+                {(() => {
+                  if (tableData.length > 0) {
+                    return (
+                      tableData.map((tableInside, tableKey) => (
+                        <tr key={tableKey}>
+                          <td>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" onChange={this.handleInputChange.bind(this, tableKey)}/>
+                            </div>
+                          </td>
+                          {tableHeader.map((value, key) => (
+                            (key > 0) ? <td contentEditable="true" suppressContentEditableWarning={true} onBlur={this.handleContent.bind(this, value, tableKey)}>{tableInside[value.toLowerCase().replace(" ", "_")]}</td> : ''
+                          ))}
+                        </tr>
+                      ))
+                    )
+                  } else {
+                    return (
+                      <tr>
+                        {tableHeader.map((value, key) => (
+                          (key < 1) ? 
+                          <td key={key}>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" onChange={this.handleInputChange.bind(this, {key})}/>
+                            </div>
+                          </td> : 
+                          <td key={key} contentEditable="true" suppressContentEditableWarning={true} onBlur={this.handleContent.bind(this, value, 0)}></td>
+                        ))}
+                      </tr>
+                    )
+                  }
+                })()}
               </tbody>
             </Table>
           </Col>
         </Row>
 
         <Modal show={show}>
-          <Modal.Header>
-            <Modal.Title>Create Additional Field</Modal.Title>
-            <Button variant="light" className="btn-close" onClick={(e) => {this.setState({show:false})}}></Button>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col md={8}>
-                <Form.Group controlId="formGridEmail">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter name" />
-              </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group controlId="formGridPassword">
-                <Form.Label>Type</Form.Label>
-                <Form.Control as="select" defaultValue="Choose...">
-                  <option>Choose...</option>
-                  <option>Input</option>
-                </Form.Control>
-              </Form.Group>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="outline-danger" onClick={(e) => {this.setState({show:false})}}>
-              Batal
-            </Button>
-            <Button variant="secondary" onClick={(e) => {this.setState({show:false})}}>
-              Tambah
-            </Button>
-          </Modal.Footer>
+          <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Modal.Header>
+              <Modal.Title>Create Additional Field</Modal.Title>
+              <Button variant="light" className="btn-close" onClick={(e) => {this.setState({show:false})}}></Button>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col md={8}>
+                  <Form.Group controlId="formGridEmail">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control type="text" ref="column_name" placeholder="Enter name" />
+                </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group controlId="formGridPassword">
+                  <Form.Label>Type</Form.Label>
+                  <Form.Control as="select" ref="column_type" defaultValue="Choose...">
+                    <option>Choose...</option>
+                    <option>Text</option>
+                  </Form.Control>
+                </Form.Group>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="outline-danger" onClick={(e) => {this.setState({show:false})}}>
+                Batal
+              </Button>
+              <Button type="submit" variant="secondary">
+                Tambah
+              </Button>
+            </Modal.Footer>
+          </Form>
         </Modal>
       </div>
     );
