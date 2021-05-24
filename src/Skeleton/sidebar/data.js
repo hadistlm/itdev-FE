@@ -32,20 +32,49 @@ export const Data = {
     },
     {
         header: true,
-        name: 'Config'
+        name: 'OCA'
+    },
+    {
+        name: 'Statistics',
+        icon: 'fas fa-chart-line',
+        url: "/oca/statistics"
+    },
+    {
+        name: 'SMS',
+        icon: 'fas fa-comment-alt',
+        url: "/oca/sms"
     },
     {
         dropdown: true,
-        name: 'Contact Group',
-        icon: 'fas fa-users',
+
+        name: 'Email',
+        icon: 'fas fa-envelope',
         children: [{
-            name: 'List',
-            url: '/setting/contact/group/list'
-        },
-        {
-            name: 'Add New',
-            url: '/setting/contact/group/form'
+            name: 'Broadcast',
+            url: '/oca/email'
+        }, {
+            name: 'Template',
+            url: '/oca/email/template'
+
         }]
+    },
+    {
+        dropdown: true,
+
+        name: 'Whatsapp',
+        icon: 'fab fa-whatsapp',
+        children: [{
+            name: 'Broadcast',
+            url: '/oca/whatsapp'
+        }, {
+            name: 'Template',
+            url: '/oca/whatsapp/template'
+
+        }]
+    },
+    {
+        header: true,
+        name: 'Config'
     },
     {
         dropdown: true,
