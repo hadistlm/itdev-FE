@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import _ from 'lodash';
 import myHelper from "../../Helper/myHelper";
+import myContent from "../../Helper/myContent";
 import "./Form.css";
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -34,6 +35,10 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+
 import SaveIcon from '@material-ui/icons/Save';
 import ReplayIcon from '@material-ui/icons/Replay';
 import AddIcon from '@material-ui/icons/Add';
@@ -42,6 +47,7 @@ export class Form extends Component{
   myMode=myHelper.getMode("mode");
   constructor(props) {
     super(props);
+    this.myContent=new myContent();
     // console.log("props", props);
     // global.__classBThis = this;
     this.handleDebounceFilterChange = _.debounce(this.handleDebounceFilterChange, 1500);
@@ -67,6 +73,14 @@ export class Form extends Component{
 
         contact:" ",
         message:"",
+        broadcast:"direct",
+        schedule:{
+          date:"",
+          time:"",
+          time_list:[]
+        },
+
+        repeat:false,
         variable:[]
       },
       list_contact:[
@@ -152,6 +166,18 @@ export class Form extends Component{
         
         if(typeof input[mode] === "array"){
             input[mode].push(event.target.value);
+            this.setState({
+                input:input
+            });  
+        }
+        else if(typeof input[mode] === "object"){
+            input[mode]=event;
+            this.setState({
+                input:input
+            });  
+        }
+        else if(mode == "repeat"){
+            input[mode]=event.target.checked;
             this.setState({
                 input:input
             });  
@@ -278,7 +304,7 @@ export class Form extends Component{
             onChange={(event) => this.handleChange('name',event)}
             
           />
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
         
@@ -294,7 +320,7 @@ export class Form extends Component{
             onChange={(event) => this.handleChange('email',event)}
             
           />
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
 
@@ -310,7 +336,7 @@ export class Form extends Component{
             onChange={(event) => this.handleChange('sender',event)}
             
           />
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
 
@@ -326,7 +352,7 @@ export class Form extends Component{
             onChange={(event) => this.handleChange('subject',event)}
             
           />
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
         
@@ -361,7 +387,7 @@ export class Form extends Component{
               ))
             }
           </Select>
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
 
@@ -396,11 +422,11 @@ export class Form extends Component{
               ))
             }
           </Select>
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin"></FormHelperText>
         </FormControl>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className="no-padding-bottom">
         <FormControl fullWidth  className="myInputArea" color="secondary" variant="outlined">
           <div className="myLabel" htmlFor="inp_message">Message
             <FormControl className={myHelper.getMode("whatsapp")?"myHidden":""} color="secondary" className="my-btn bg-light-blue">
@@ -447,8 +473,49 @@ export class Form extends Component{
             onChange={(event) => this.handleChange('message',event)}
             
           />
-          <FormHelperText></FormHelperText>
+          <FormHelperText className="no-margin">You can also add dynamic variables to personalize your message by click the add variable button.</FormHelperText>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} className="no-padding-bottom">
+          <hr/>
+          <FormControl component="fieldset">
+            <FormLabel className="page_title" component="legend">Broadcast Scheduler</FormLabel>
+            <RadioGroup row aria-label="position" name="broadcast" value={this.state.input.broadcast} onChange={(event) => this.handleChange('broadcast',event)}>
+              <FormControlLabel
+                value="direct"
+                control={<Radio color="secondary" />}
+                label="Direct Broadcast"
+                labelPlacement="End"
+              />
+              <FormControlLabel
+                value="schedule"
+                control={<Radio color="secondary" />}
+                label="Schedule Broadcast"
+                labelPlacement="End"
+              />
+            </RadioGroup>
+          </FormControl> 
+
+          <div className={this.state.input.broadcast=="direct"?"myHidden":""}>
+              <this.myContent.BroadcastScheduler data={this.state.input.schedule} onDataChange={this.handleChange} />
+          </div> 
+        </Grid>
+
+        <Grid item xs={12}>
+          <hr/>
+          <Grid container spacing={0}>
+            <Grid item xs={12} sm={6}>
+            <div className="page_title">Repeat Broadcast</div>
+            </Grid>
+            <Grid className="text-right" item xs={12} sm={6}>
+            <Switch
+              checked={this.state.input.repeat}
+              onChange={(event) => this.handleChange('repeat',event)}
+              name="repeat"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+            </Grid>
+          </Grid>  
         </Grid>
 
         </Grid>

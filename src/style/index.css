@@ -2,13 +2,43 @@ a:link {
   text-decoration: none !important;
 }
 
-
+.text-center{
+  text-align: center !important;
+}
 .navbar-bg {
   height: 65px !important;
 }
 
 .MuiAppBar-colorPrimary{
   background: rgb(225 23 21) !important;
+}
+
+.no-margin{
+  margin: 0px !important;
+}
+
+.no-radius{
+  border-radius: 0px !important;
+}
+
+.no-margin-bottom{
+  margin-bottom: 0px !important;
+}
+
+.no-margin-top{
+  margin-top: 0px !important;
+}
+
+.no-margin-left{
+  margin-left: 0px !important;
+}
+
+.no-margin-right{
+  margin-right: 0px !important;
+}
+
+.no-padding{
+  padding: 0px !important;
 }
 
 .no-padding-bottom{
@@ -440,6 +470,16 @@ a:link {
 .myLayout .makeStyles-root-5 .MuiPaper-root{
   border-top: 1px solid #ccc !important;
   border-radius: 0px !important;
+}
+
+.mySympleTable,.mySympleTable tr th,.mySympleTable tr td{
+  border: 1px solid #ccc;
+}
+
+.mySympleTable thead tr th{
+  background: #EEF2F7 !important;
+  font-weight: bolder;
+
 }
 
 .myTableBolder{

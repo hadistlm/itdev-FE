@@ -17,6 +17,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
@@ -193,6 +194,12 @@ export class myTable extends Component{
       dafaultRowsPerPage:PropTypes.number,
       dafaultListrowsPerPage:PropTypes.array
     };
+
+    this.CreateTableAddOn.propTypes ={
+      cols:PropTypes.array.isRequired,
+      rows:PropTypes.array.isRequired,
+      onDataChange:PropTypes.func
+    }
     
 
   }
@@ -661,6 +668,100 @@ export class myTable extends Component{
           
         </div>
       );
+  }
+
+  CreateTableAddOn=(props)=>{
+    const {cols,rows,onDataChange}=props;
+    let data={};
+
+    const handleChange=(mode,event)=>{
+      data[mode]=event.target.value;
+    }
+
+    const handleClick=(myData,event)=>{
+      let datarows=rows;
+      datarows.unshift(myData);  
+      
+      data={};
+        
+      onDataChange(datarows);
+    }
+
+    cols.map((col) => {
+      
+    })
+
+    return(
+      <TableContainer>
+        <Table className="mySympleTable" size='small' aria-label="simple table">
+          <TableHead>
+            <TableRow>{
+              cols.map((col) => (      
+                <TableCell key={"collAddon_th_"+col.field} component="th" scope="row">
+                  {col.title}
+                </TableCell>
+              ))}
+            </TableRow>
+            <TableRow>{
+              cols.map((col) => ( 
+                <TableCell key={"collAddon_input_"+col.field} align="center" component="td" className="no-padding text-center" scope="row">
+                  {col.addOn.mode=="option"?
+                  (
+                  <FormControl fullWidth  className="mySelect no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
+                  <Select
+                    required  
+                    id={"add_"+col.field}
+                    value={data[col.field]}
+                    onChange={(event)=>handleChange(col.field,event)}
+                  >
+                      {col.addOn.list.map((option,index) => (
+                        <MenuItem key={"add_opt"+option.var+"_"+index} value={option.var}>{option.val}</MenuItem>
+                      ))}
+                  </Select>
+                  </FormControl>):""
+                  }
+                  
+                  {col.addOn.mode=="time"?
+                  (
+                  <FormControl fullWidth  className="myInput no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
+                  <OutlinedInput
+                    required  
+                    id={"add_"+col.field}
+                    type="time"
+                    placeholder="HH:MM"
+                    value={data[col.field]}
+                    onChange={(event)=>handleChange(col.field,event)}
+                  /></FormControl>):""
+                  }
+
+                  {col.addOn.mode=="action" && col.addOn.list.includes("add")?
+                  (<Button fullWidth variant="contained" onClick={(event)=>handleClick(data,event)} color="secondary">
+                      Add
+                    </Button>):""
+                  }
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { rows.length>0?(
+              rows.map((row,index) => (
+              <TableRow key={"rowAddOn"+index}>
+                {
+                  cols.map((col) => (      
+                    <TableCell key={"collAddon_"+col.field} component="td" scope="row">
+                      {row[col.field]!=undefined?row[col.field]:""}
+                    </TableCell>
+                  ))
+                }
+              </TableRow>
+              ))
+              ):(<TableCell colSpan={cols.length} component="td" align="center"> Not Data </TableCell>)
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
   }
 
   render() {
