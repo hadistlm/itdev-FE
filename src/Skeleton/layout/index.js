@@ -6,7 +6,6 @@ import Statistics from "../../Pages/Statistics/Statistics";
 import Form from "../../Pages/Form/Form";
 
 const Dashboard = React.lazy(() => import('../../Pages/Dashboard/Dashboard'));
-const Testing = React.lazy(() => import('../../Pages/Testing'));
 
 const Broadcast = React.lazy(() => import('../../Pages/Whatsapp/Broadcast'));
 const BroadcastForm = React.lazy(() => import('../../Pages/Whatsapp/BroadcastForm'));
@@ -25,7 +24,6 @@ const Main = () => {
   	<React.Suspense fallback={<h1>Still Loading…</h1>}>
 	    <Switch> {/* The Switch decides which component to show based on the current URL.*/}
 	      <Route exact path='/' component={Dashboard}></Route>
-	      <Route exact path='/testing' component={Testing}></Route>
 	    	{/*Whatsapp Page*/}
 	      <Route exact path='/whatsapp/broadcast' component={Broadcast}></Route>
 	      <Route exact path='/whatsapp/broadcast/form' component={BroadcastForm}></Route>
