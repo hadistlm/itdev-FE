@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from "react-router-dom";
 
 import { Row, Col, Button, Table, Form, Modal } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import { Row, Col, Button, Table, Form, Modal } from 'react-bootstrap';
 class GroupFormManual extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       show: false,
       tableHeader: [' ', 'Name', 'Phone Number'],
@@ -16,16 +17,30 @@ class GroupFormManual extends React.Component {
         phone_number:''
       }]
     };
+
+    this.handleDataChanged = this.handleDataChanged.bind(this);
   }
 
-  handleSelected(){
-    const { selectedData, tableData } = this.state;
-    const whitelist = tableData.filter((i,k) => !selectedData.includes(k))
+  static getDerivedStateFromProps(props, state) {
+    return (props.onSelected.length > 0) ? {
+      tableData: props.onSelected,
+    } : state.tableData;
+  }
 
-    this.setState({
+  async handleSelected(){
+    const { selectedData, tableData } = this.state;
+    const whitelist = tableData.filter((i,k) => !selectedData.includes(k));
+
+    await this.setState({
       selectedData: [],
-      tableData:whitelist
+      tableData: (whitelist.length < 1) ? [{
+        name: '',
+        phone_number:''
+      }] : whitelist
     });
+
+    // send back data
+    this.handleDataChanged();
   }
 
   handleRow(){
@@ -113,6 +128,15 @@ class GroupFormManual extends React.Component {
     const selectedColumn = columnName.toLowerCase().replaceAll(" ", "_");
 
     tableData[rowIndex][selectedColumn] = event.target.textContent;
+
+    // send back data
+    this.handleDataChanged();
+  }
+
+  handleDataChanged(){
+    const { tableData } = this.state;
+
+    this.props.onChanged(tableData);
   }
 
   render() {
