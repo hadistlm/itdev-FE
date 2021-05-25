@@ -29,6 +29,16 @@
 	min-width: 50px !important; 
 }
 
+.myForm .page_title{
+  font-weight: bolder !important;
+  font-size: 16px !important;
+  color: #333 !important;
+}
+
+.myForm .MuiFormControlLabel-root{
+	width: 260px;
+}
+
 .myForm .myLabel .my-btn{
   position: absolute !important;
   right: 0 !important;

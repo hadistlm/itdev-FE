@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Route,NavLink } from "react-router-dom";
 import _ from 'lodash';
 import myHelper from "../../Helper/myHelper";
 import myContent from "../../Helper/myContent";
@@ -274,9 +275,9 @@ export class Form extends Component{
           <Grid item xs={8} className="text-right">
           <Button variant="contained" className="my-btn bg-light-blue" onClick={this.reloadData}><ReplayIcon /> &nbsp; Reset</Button>
           &nbsp;&nbsp;
-          <a href={"/oca/"+this.myMode.toLowerCase()}>
+          <NavLink to={"/oca/"+this.myMode.toLowerCase()}>
           <Button variant="contained" className="my-btn bg-red" ><SaveIcon /> &nbsp; Start Broadcast</Button>
-          </a>
+          </NavLink>
           </Grid>
       </Grid>    
       

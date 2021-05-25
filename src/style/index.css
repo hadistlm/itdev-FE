@@ -13,6 +13,8 @@ a:link {
   background: rgb(225 23 21) !important;
 }
 
+
+
 .no-margin{
   margin: 0px !important;
 }
@@ -502,6 +504,11 @@ a:link {
 
 .pagination-right nav{
   float: right !important;
+}
+
+.myDisabled{
+ opacity: 0.5 !important;
+ pointer-events: none !important; 
 }
 
 .myHidden{

@@ -54,10 +54,10 @@ export class myContent extends Component{
     const myTbl=new myTable();
 
     const myCol=[
-                  {field:"type",title:"Ended Time Type",addOn:{mode:"option",default:"Specific Time",list:[{var:"Specific Time",val:"Specific Time"},{var:"Daily Max Operation Time",val:"Daily Max Operation Time"}]}},
-                  {field:"start",title:"Start At",addOn:{mode:"time"}},
-                  {field:"end",title:"End At",addOn:{mode:"time"}},
-                  {field:"action",title:"Action",addOn:{mode:"action",list:["add","delete"]}},
+                  {field:"type",title:"Ended Time Type",addOn:{mode:"option",mandatory:true,hideValueOn:"Daily Max Operation Time",hideFiled:"end",disabledField:"action",disabledIfSelectExistedVal:"Daily Max Operation Time",default:"Specific Time",defaultPushPositionOn:"first",list:[{var:"Specific Time",val:"Specific Time"},{var:"Daily Max Operation Time",val:"Daily Max Operation Time"}]}},
+                  {field:"start",title:"Start At",addOn:{mode:"time",mandatory:true}},
+                  {field:"end",title:"End At",addOn:{mode:"time",mandatory:true,mandatoryIgnore:"type",mandatoryIgnoreOn:"Daily Max Operation Time"}},
+                  {field:"action",title:"Action",addOn:{mode:"action",mandatory:false,list:["add","delete"]}},
                 ];
 
     const handleChange=(mode,event)=>{

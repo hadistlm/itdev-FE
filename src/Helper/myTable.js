@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import myHelper from "./myHelper";
+import $ from 'jquery';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -674,22 +676,111 @@ export class myTable extends Component{
     const {cols,rows,onDataChange}=props;
     let data={};
 
-    const handleChange=(mode,event)=>{
-      data[mode]=event.target.value;
+    const handleChange=(col,event)=>{
+      
+      if(col.addOn.hideFiled!=undefined){
+        if(col.addOn.hideValueOn==event.target.value)
+        $("#add_"+col.addOn.hideFiled).hide();
+        else      
+        $("#add_"+col.addOn.hideFiled).show();
+      }
+
+      if(col.addOn.disabledField!=undefined){
+        let myArr=myHelper.searchArray(col.field,col.addOn.disabledIfSelectExistedVal,rows);
+        if(myArr>=0 && event.target.value==col.addOn.disabledIfSelectExistedVal){
+          $("#add_"+col.addOn.disabledField).attr('disabled','disabled');
+          $("#add_"+col.addOn.disabledField).addClass('myDisabled');
+        }
+        else{
+          $("#add_"+col.addOn.disabledField).removeClass('myDisabled');
+        }
+      }
+      
+
+      data[col.field]=event.target.value;
     }
 
     const handleClick=(myData,event)=>{
       let datarows=rows;
-      datarows.unshift(myData);  
-      
-      data={};
+      let setMethod="push";  
+      for (var i = 0; i < cols.length; i++) {
+        if(cols[i].addOn.default!=undefined && cols[i].addOn.default!="" && (myData[cols[i].field]==undefined || myData[cols[i].field]=="")){
+           myData[cols[i].field]=cols[i].addOn.default; 
+        }
+
+        if(cols[i].addOn.defaultPushPositionOn!=undefined && cols[i].addOn.defaultPushPositionOn=="first" && myData[cols[i].field]==cols[i].addOn.default)setMethod="unshift";
         
+        if(cols[i].addOn.mandatory && (myData[cols[i].field]==undefined || myData[cols[i].field]=="")){
+            if(cols[i].addOn.mandatoryIgnore==undefined || cols[i].addOn.mandatoryIgnore=="")  
+            break;
+            else if(cols[i].addOn.mandatoryIgnore!=undefined && cols[i].addOn.mandatoryIgnoreOn==myData[cols[i].addOn.mandatoryIgnore]){
+
+            }  
+        }
+
+        if((i+1)==cols.length){
+            if(setMethod=="push")
+            datarows.push(myData);        
+            else  
+            datarows.unshift(myData);        
+
+            data={};              
+            onDataChange(datarows);
+        }  
+      }
+      
+    }
+
+    const cekInputData=(field)=>{
+      return data[field]+" "+$('#add_'+field).val();
+    }
+
+    const deleteRow=(index)=>{
+      let datarows=rows;
+      datarows.splice(index, 1);
       onDataChange(datarows);
     }
 
-    cols.map((col) => {
-      
-    })
+    const myInput=(col)=>{
+         return(
+               <div>
+                  {col.addOn.mode=="option"?
+                    (
+                    <FormControl fullWidth  id={"add_"+col.field} className="mySelect no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
+                    <Select
+                      required  
+                      value={data[col.field]}
+                      defaultValue={col.addOn.default}
+                      onChange={(event)=>handleChange(col,event)}
+                    >
+                        {col.addOn.list.map((option,index) => (
+                          <MenuItem key={"add_opt"+option.var+"_"+index} value={option.var} selected={(col.addOn.default==option.var?"selected":"" )}>{option.val}</MenuItem>
+                        ))}
+                    </Select>
+                    </FormControl>):""
+                    }
+                    
+                    {col.addOn.mode=="time"?
+                    (
+                    <FormControl fullWidth id={"add_"+col.field} className="myInput no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
+                    <OutlinedInput
+                      required  
+                      
+                      type="time"
+                      placeholder="HH:MM"
+                      value={data[col.field]}
+                      onChange={(event)=>handleChange(col,event)}
+                    /></FormControl>):""
+                    }
+
+                    {col.addOn.mode=="action" && col.addOn.list.includes("add")?
+                    (<Button id={"add_"+col.field} fullWidth variant="contained" onClick={(event)=>handleClick(data,event)} color="secondary">
+                        Add
+                      </Button>):""
+                    }
+               </div>     
+      )
+    }
 
     return(
       <TableContainer>
@@ -705,40 +796,7 @@ export class myTable extends Component{
             <TableRow>{
               cols.map((col) => ( 
                 <TableCell key={"collAddon_input_"+col.field} align="center" component="td" className="no-padding text-center" scope="row">
-                  {col.addOn.mode=="option"?
-                  (
-                  <FormControl fullWidth  className="mySelect no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
-                  <Select
-                    required  
-                    id={"add_"+col.field}
-                    value={data[col.field]}
-                    onChange={(event)=>handleChange(col.field,event)}
-                  >
-                      {col.addOn.list.map((option,index) => (
-                        <MenuItem key={"add_opt"+option.var+"_"+index} value={option.var}>{option.val}</MenuItem>
-                      ))}
-                  </Select>
-                  </FormControl>):""
-                  }
-                  
-                  {col.addOn.mode=="time"?
-                  (
-                  <FormControl fullWidth  className="myInput no-radius no-margin-bottom" color="secondary" margin="dense" variant="outlined">
-                  <OutlinedInput
-                    required  
-                    id={"add_"+col.field}
-                    type="time"
-                    placeholder="HH:MM"
-                    value={data[col.field]}
-                    onChange={(event)=>handleChange(col.field,event)}
-                  /></FormControl>):""
-                  }
-
-                  {col.addOn.mode=="action" && col.addOn.list.includes("add")?
-                  (<Button fullWidth variant="contained" onClick={(event)=>handleClick(data,event)} color="secondary">
-                      Add
-                    </Button>):""
-                  }
+                  {myInput(col)}
                 </TableCell>
               ))}
             </TableRow>
@@ -749,8 +807,13 @@ export class myTable extends Component{
               <TableRow key={"rowAddOn"+index}>
                 {
                   cols.map((col) => (      
-                    <TableCell key={"collAddon_"+col.field} component="td" scope="row">
+                    <TableCell key={"collAddon_"+col.field} component="td" align="center" scope="row">
                       {row[col.field]!=undefined?row[col.field]:""}
+                      {col.addOn.mode=="action"?(
+                        col.addOn.list.includes("delete")?(<IconButton onClick={()=>deleteRow(index)} className="no-margin no-padding" aria-label="delete">
+                                                             <DeleteIcon />
+                                                           </IconButton>):""
+                      ):""}
                     </TableCell>
                   ))
                 }

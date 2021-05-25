@@ -3,6 +3,7 @@ import $ from 'jquery';
 import moment from 'moment';
 import _ from 'lodash';
 import { lighten, makeStyles } from '@material-ui/core/styles';
+import { Route,NavLink } from "react-router-dom";
 
 import daterangepicker from 'daterangepicker';
 import Grid from '@material-ui/core/Grid';
@@ -324,9 +325,9 @@ class Messaging extends Component {
           <Button variant="contained" className="my-btn bg-light" onClick={this.reloadData}><RefreshIcon className="ic_left" /> &nbsp; Refresh</Button>
           </Grid>
           <Grid item xs={6} className="text-right">
-          <a href={this.myMode.toLowerCase()+"/form"}>
+          <NavLink to={this.myMode.toLowerCase()+"/form"}>
 	        <Button variant="contained" className="my-btn bg-red" ><AddIcon className="ic_left" /> &nbsp; New Broadcast</Button>
-          </a>
+          </NavLink>
 	        </Grid>
 	        <Grid item xs={12}>
 	        	<Paper className="myPaper" elevation={3}>
