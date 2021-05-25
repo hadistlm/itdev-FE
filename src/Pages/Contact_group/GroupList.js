@@ -62,7 +62,9 @@ class GroupList extends React.Component {
                             </div>
                           </td>
                           <td>
-                            <i className="far fa-eye" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
+                            <Link to="/setting/contact/group/users" style={{textDecoration : 'none',color:'#6c757d'}}>
+                              <i className="far fa-eye" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>
+                            </Link>{' '}
                             <i className="fas fa-pencil-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
                             <i className="far fa-trash-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
                           </td>

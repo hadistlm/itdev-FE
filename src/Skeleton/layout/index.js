@@ -16,6 +16,7 @@ const Usages = React.lazy(() => import('../../Pages/Whatsapp/Usages'));
 
 const ContactGroup = React.lazy(() => import('../../Pages/Contact_group/GroupList'));
 const ContactGroupForm = React.lazy(() => import('../../Pages/Contact_group/GroupForm'));
+const ContactList = React.lazy(() => import('../../Pages/Contact_group/ContactList'));
 
 const Variable = React.lazy(() => import('../../Pages/Setting/Variable'));
 
@@ -34,8 +35,8 @@ const Main = () => {
 	  		{/*Setting Section*/}
 	  		<Route exact path='/setting/contact/group/list' component={ContactGroup}></Route>
 	  		<Route exact path='/setting/contact/group/form' component={ContactGroupForm}></Route>
+	  		<Route exact path='/setting/contact/group/users' component={ContactList}></Route>
 	      <Route exact path='/setting/variable' component={Variable}></Route>
-
 
 	      <Route exact key="page_statistics" path='/oca/statistics' component={Statistics}/>
 	      <Route exact key="page_sms" path='/oca/sms' component={Messaging}/>
