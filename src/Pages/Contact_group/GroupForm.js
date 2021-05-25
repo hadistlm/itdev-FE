@@ -14,12 +14,42 @@ class GroupForm extends React.Component {
     super(props);
     this.state = {
       page: 'form',
-      type: null
+      type: null,
+      uploadData: [],
+      manualData: [],
+      copyData: [],
+      passData: []
     };
   }
 
+  handleNavigation(method = 'next'){
+    const page_list = ['form','review','complete'];
+    let current = page_list.indexOf(this.state.page);
+
+    if (method === 'next') {
+      this.setState({
+        page: (current <= 2) ? page_list[current+=1] : 'complete'
+      });
+    }else{
+      this.setState({
+        page: (current >= 1) ?page_list[current-=1] : 'form'
+      });
+    }
+  }
+
+  handleTypeChange(type, event){
+    const { uploadData, manualData, copyData } = this.state;
+    const selected = (type) => ({
+      "copy": { type:type, passData: copyData },
+      "manual": { type:type, passData: manualData },
+      "upload": { type:type, passData: uploadData }  
+    })[type];
+
+    this.setState(selected(type));
+  }
+
   render() {
-    const { page, type } = this.state;
+    const { page, type, manualData, copyData, passData } = this.state;
 
     return (
       <div className="main-content">
@@ -69,19 +99,19 @@ class GroupForm extends React.Component {
                         <Col md={12}>
                           <h5>Choose You way to add contacts</h5>
                           <div className="form-check">
-                            <input className="form-check-input" type="radio" name="type_add" id="radio-1" value="upload" onChange={(e) => {this.setState({type:'upload'})}}/>
+                            <input className="form-check-input" type="radio" name="type_add" id="radio-1" value="upload" onChange={this.handleTypeChange.bind(this, 'upload')}/>
                             <label className="form-check-label" htmlFor="radio-1">
                               Upload .CSV or .TXT
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="radio" name="type_add" id="radio-2" value="manual" onChange={(e) => {this.setState({type:'manual'})}}/>
+                            <input className="form-check-input" type="radio" name="type_add" id="radio-2" value="manual" onChange={this.handleTypeChange.bind(this, 'manual')}/>
                             <label className="form-check-label" htmlFor="radio-2">
                               Add Contact Manually
                             </label>
                           </div>
                           <div className="form-check">
-                            <input className="form-check-input" type="radio" name="type_add" id="radio-3" value="copy" onChange={(e) => {this.setState({type:'copy'})}}/>
+                            <input className="form-check-input" type="radio" name="type_add" id="radio-3" value="copy" onChange={this.handleTypeChange.bind(this, 'copy')}/>
                             <label className="form-check-label" htmlFor="radio-3">
                               Copy and Paste
                             </label>
@@ -93,10 +123,10 @@ class GroupForm extends React.Component {
                               <GroupFormUpload />
                             )}
                             {type == 'manual' && (
-                              <GroupFormManual />
+                              <GroupFormManual onChanged={(data) => { console.log(data); this.setState({manualData:data}) }} onSelected={passData} />
                             )}
                             {type == 'copy' && (
-                              <GroupFormCopy />
+                              <GroupFormCopy onChanged={(data) => { this.setState({copyData:data}) }} onSelected={passData}  />
                             )}
                           </div>
                         </Col>
@@ -110,8 +140,8 @@ class GroupForm extends React.Component {
                     </Row>
                     <Row style={{display: page == 'complete' ? 'none' : 'block'}}>
                       <Col md={{span:4, offset:8}} className="d-flex justify-content-end">
-                        <Button variant="outline-danger">Kembali</Button>{' '}
-                        <Button variant="secondary" style={{marginLeft:'5px'}}>Selanjutnya</Button>
+                        <Button variant="outline-danger" onClick={this.handleNavigation.bind(this, 'previous')}>Kembali</Button>{' '}
+                        <Button variant="secondary" style={{marginLeft:'5px'}} onClick={this.handleNavigation.bind(this, 'next')}>Selanjutnya</Button>
                       </Col>
                     </Row>
                   </Card.Body>

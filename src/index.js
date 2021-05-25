@@ -4,9 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 /* Important Style Packages */
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "./assets/css/style.css";
-import "./assets/css/components.css";
+import "./style/styling.scss";
 
 /* Plugin Packages */
 import "@fortawesome/fontawesome-free/css/all.css";

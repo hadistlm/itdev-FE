@@ -108,7 +108,40 @@ const myHelper={
   },
   setZero:(number)=>
   {
-       return (number < 10 ? '0' : '') + number;
+    return (number < 10 ? '0' : '') + number;
+  },
+  csvToArray: (str, delimiter = ",") => {
+    const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+    const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+    
+    const arr = rows.map(function (row) {
+      const values = row.split(delimiter);
+      const el = headers.reduce(function (object, header, index) {
+        object[header] = values[index];
+        return object;
+      }, {});
+      return el;
+    });
+
+    // return the array
+    return arr;
+  },
+  arrayToCSV: (objArray) => {
+    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+
+    for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (let index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    return str;
   }
 
 }

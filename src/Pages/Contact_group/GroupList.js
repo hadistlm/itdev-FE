@@ -16,9 +16,9 @@ class GroupList extends React.Component {
               </Row>
               <div className="section-header-breadcrumb">
                 <Link to="/setting/contact/group/form" style={{textDecoration : 'none'}}>
-                  <div class="d-grid">
+                  <div className="d-grid">
                     <Button variant="danger" size="lg">
-                      <i class="fas fa-plus"></i> New Contact
+                      <i className="fas fa-plus"></i> New Contact
                     </Button>
                   </div>
                 </Link>
@@ -35,7 +35,7 @@ class GroupList extends React.Component {
                       <InputGroup className="mb-3">
                         <FormControl placeholder="Search" style={{borderRightColor:'#fff'}}/>
                         <InputGroup.Append>
-                          <InputGroup.Text><i class="fas fa-search"></i></InputGroup.Text>
+                          <InputGroup.Text><i className="fas fa-search"></i></InputGroup.Text>
                         </InputGroup.Append>
                       </InputGroup>
                     </Col>
@@ -62,9 +62,11 @@ class GroupList extends React.Component {
                             </div>
                           </td>
                           <td>
-                            <i class="far fa-eye" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
-                            <i class="fas fa-pencil-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
-                            <i class="far fa-trash-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
+                            <Link to="/setting/contact/group/users" style={{textDecoration : 'none',color:'#6c757d'}}>
+                              <i className="far fa-eye" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>
+                            </Link>{' '}
+                            <i className="fas fa-pencil-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
+                            <i className="far fa-trash-alt" style={{fontSize: '1.5em', paddingRight: '10px'}}></i>{' '}
                           </td>
                         </tr>
                       </tbody>

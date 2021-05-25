@@ -1,29 +1,36 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-
 import { Row, Col, Form } from 'react-bootstrap';
+
+import myHelper from "../../Helper/myHelper";
 
 class GroupFormCopy extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      file_data: null
+      tableData: []
     };
   }
 
-  getUploadParams(params){
-    return { url: 'https://httpbin.org/post' }
+  static getDerivedStateFromProps(props, state) {
+    return {
+      tableData: props.onSelected,
+    };
   }
 
-  handleChangeStatus(params){
+  async handleInput(event){
+    const result = myHelper.csvToArray(event.target.value);
 
-  }
+    await this.setState({ 
+      tableData:result 
+    });
 
-  handleSubmit(params){
-
+    this.props.onChanged(result);
   }
 
   render() {
+    const { tableData } = this.state;
+
     return (
       <div>
         <Row>
@@ -34,7 +41,7 @@ class GroupFormCopy extends React.Component {
         <Row className="mt-2">
           <Col md={12}>
             <Form.Group>
-              <Form.Control as="textarea" style={{height: "150px"}} />
+              <Form.Control as="textarea" defaultValue={myHelper.arrayToCSV(JSON.stringify(tableData))} style={{height: "150px"}} onInput={this.handleInput.bind(this)}/>
             </Form.Group>
           </Col>
         </Row>

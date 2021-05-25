@@ -6,7 +6,6 @@ import Statistics from "../../Pages/Statistics/Statistics";
 import Form from "../../Pages/Form/Form";
 
 const Dashboard = React.lazy(() => import('../../Pages/Dashboard/Dashboard'));
-const Testing = React.lazy(() => import('../../Pages/Testing'));
 
 const Broadcast = React.lazy(() => import('../../Pages/Whatsapp/Broadcast'));
 const BroadcastForm = React.lazy(() => import('../../Pages/Whatsapp/BroadcastForm'));
@@ -16,6 +15,7 @@ const Usages = React.lazy(() => import('../../Pages/Whatsapp/Usages'));
 
 const ContactGroup = React.lazy(() => import('../../Pages/Contact_group/GroupList'));
 const ContactGroupForm = React.lazy(() => import('../../Pages/Contact_group/GroupForm'));
+const ContactList = React.lazy(() => import('../../Pages/Contact_group/ContactList'));
 
 const Variable = React.lazy(() => import('../../Pages/Setting/Variable'));
 
@@ -24,7 +24,6 @@ const Main = () => {
   	<React.Suspense fallback={<h1>Still Loading…</h1>}>
 	    <Switch> {/* The Switch decides which component to show based on the current URL.*/}
 	      <Route exact path='/' component={Dashboard}></Route>
-	      <Route exact path='/testing' component={Testing}></Route>
 	    	{/*Whatsapp Page*/}
 	      <Route exact path='/whatsapp/broadcast' component={Broadcast}></Route>
 	      <Route exact path='/whatsapp/broadcast/form' component={BroadcastForm}></Route>
@@ -34,8 +33,8 @@ const Main = () => {
 	  		{/*Setting Section*/}
 	  		<Route exact path='/setting/contact/group/list' component={ContactGroup}></Route>
 	  		<Route exact path='/setting/contact/group/form' component={ContactGroupForm}></Route>
+	  		<Route exact path='/setting/contact/group/users' component={ContactList}></Route>
 	      <Route exact path='/setting/variable' component={Variable}></Route>
-
 
 	      <Route exact key="page_statistics" path='/oca/statistics' component={Statistics}/>
 	      <Route exact key="page_sms" path='/oca/sms' component={Messaging}/>
