@@ -78,6 +78,19 @@ export const Data = {
     },
     {
         dropdown: true,
+        name: 'Contact Group',
+        icon: 'fas fa-users',
+        children: [{
+            name: 'List',
+            url: '/setting/contact/group/list'
+        },
+        {
+            name: 'Add New',
+            url: '/setting/contact/group/form'
+        }]
+    },
+    {
+        dropdown: true,
         name: 'Settings',
         icon: 'fas fa-cog',
         children: [{

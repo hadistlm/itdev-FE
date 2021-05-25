@@ -167,7 +167,7 @@ class GroupFormManual extends React.Component {
                             </div>
                           </td>
                           {tableHeader.map((value, key) => (
-                            (key > 0) ? <td contentEditable="true" suppressContentEditableWarning={true} onBlur={this.handleContent.bind(this, value, tableKey)}>{tableInside[value.toLowerCase().replace(" ", "_")]}</td> : ''
+                            (key === 0) || <td key={key} contentEditable="true" suppressContentEditableWarning={true} onBlur={this.handleContent.bind(this, value, tableKey)}>{tableInside[value.toLowerCase().replace(" ", "_")]}</td>
                           ))}
                         </tr>
                       ))
