@@ -7,5 +7,7 @@
 
 export const config = {
   production: false,
+  appName: "React Kickstarter",
+  appInitial: "RCT",
   baseURL: "http://localhost:3000/api/v1"
 };
