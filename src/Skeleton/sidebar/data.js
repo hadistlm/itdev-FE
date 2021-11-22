@@ -11,95 +11,22 @@ export const Data = {
     },
     {
         header: true,
-        name: 'OCA Blast'
+        name: 'Testing Grid'
     },
     {
         dropdown: true,
-
-        name: 'Whatsapp',
-        icon: 'fab fa-whatsapp',
+        name: 'Testing',
+        icon: 'fas fa-vials',
         children: [{
-            name: 'Whatsapp Broadcast',
-            url: '/whatsapp/broadcast'
+            name: 'MUI',
+            url: '/testing/mui'
         }, {
-            name: 'Whatsapp Scheduler',
-            url: '/whatsapp/scheduler'
+            name: 'AG Grid',
+            url: '/testing/ag'
 
         }, {
-            name: 'Whatsapp Usages',
-            url: '/whatsapp/usages'
-        }]
-    },
-    {
-        header: true,
-        name: 'OCA'
-    },
-    {
-        name: 'Statistics',
-        icon: 'fas fa-chart-line',
-        url: "/oca/statistics"
-    },
-    {
-        name: 'SMS',
-        icon: 'fas fa-comment-alt',
-        url: "/oca/sms"
-    },
-    {
-        dropdown: true,
-
-        name: 'Email',
-        icon: 'fas fa-envelope',
-        children: [{
-            name: 'Broadcast',
-            url: '/oca/email'
-        }, {
-            name: 'Template',
-            url: '/oca/email/template'
-
-        }]
-    },
-    {
-        dropdown: true,
-
-        name: 'Whatsapp',
-        icon: 'fab fa-whatsapp',
-        children: [{
-            name: 'Broadcast',
-            url: '/oca/whatsapp'
-        }, {
-            name: 'Template',
-            url: '/oca/whatsapp/template'
-
-        }]
-    },
-    {
-        header: true,
-        name: 'Config'
-    },
-    {
-        dropdown: true,
-        name: 'Contact Group',
-        icon: 'fas fa-users',
-        children: [{
-            name: 'List',
-            url: '/setting/contact/group/list'
-        },
-        {
-            name: 'Add New',
-            url: '/setting/contact/group/form'
-        }]
-    },
-    {
-        dropdown: true,
-        name: 'Settings',
-        icon: 'fas fa-cog',
-        children: [{
-            name: 'Variable Management',
-            url: '/setting/variable'
-        },
-        {
-            name: 'Main Setting',
-            url: '/bootstrap/badge'
+            name: 'Handsontable',
+            url: '/testing/handson'
         }]
     }]
 };

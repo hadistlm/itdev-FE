@@ -53,15 +53,16 @@ $(function() {
 
   var sidebar_nicescroll;
   var update_sidebar_nicescroll = function() {
-    let a = setInterval(function() {
-      if (typeof sidebar_nicescroll == 'object'){
-        sidebar_nicescroll.resize()
-      };
-    }, 10);
+    return;
+    // let a = setInterval(function() {
+    //   if (sidebar_nicescroll !== null){
+    //     sidebar_nicescroll.resize()
+    //   };
+    // }, 10);
 
-    setTimeout(function() {
-      clearInterval(a);
-    }, 600);
+    // setTimeout(function() {
+    //   clearInterval(a);
+    // }, 600);
   }
 
   var sidebar_dropdown = function() {

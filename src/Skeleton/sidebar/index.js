@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { Link, NavLink } from "react-router-dom";
 import { Data } from "./data";
+import { config } from "../../Environment/config";
 import { useLocation } from "react-router-dom";
 import "../../assets/js/scripts";
 import "../../assets/js/stisla";
@@ -15,10 +16,10 @@ export class SideBar extends Component {
       <div className="main-sidebar">
         <aside id="sidebar-wrapper">
           <div className="sidebar-brand">
-            <Link to="/"> Telkom OCA </Link>{" "}
+            <Link to="/"> {config.appName} </Link>{" "}
           </div>{" "}
           <div className="sidebar-brand sidebar-brand-sm">
-            <Link to="/"> OCA </Link>{" "}
+            <Link to="/"> {config.appInitial} </Link>{" "}
           </div>{" "}
           <ul className="sidebar-menu mb-5">
             {" "}
