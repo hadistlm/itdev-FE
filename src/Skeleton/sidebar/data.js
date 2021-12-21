@@ -10,6 +10,12 @@ export const Data = {
         url: "/"
     },
     {
+        name: 'Formulir Data',
+        active: true,
+        icon: 'fab fa-wpforms',
+        url: "/formulir"
+    },
+    {
         header: true,
         name: 'Testing Grid'
     },

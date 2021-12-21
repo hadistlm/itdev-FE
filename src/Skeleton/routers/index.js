@@ -5,6 +5,10 @@ const routes = {
     path: '/',
     component: React.lazy(() => import('../../Pages/Dashboard/Dashboard'))
   },
+  FORM:{
+    path: '/formulir',
+    component: React.lazy(() => import('../../Pages/Formulir/FormView'))
+  },
   TESTINGMUI: {
     path: '/testing/mui',
     component: React.lazy(() => import('../../Pages/Testing/TestingMui'))
