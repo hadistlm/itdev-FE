@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import Select from 'react-select';
-import AsyncSelect from 'react-select/async';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { random } from 'lodash';
+import { Row, Col, Card, Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 
-import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+const MySwal = withReactContent(Swal);
 
 class FormView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      errorsForm: [],
       provinces: [],
       kota: [],
       kecamatan: [],
@@ -112,7 +116,132 @@ class FormView extends React.Component {
     };
   }
 
+  handleSubmit(event){
+    event.preventDefault();
+    const {
+      selectedProvince, 
+      selectedCities, 
+      selectedKecamatan, 
+      selectedKelurahan
+    } = this.state;
+    const formData = new FormData(event.target);
+    const fileKTP = this.formKTP.files[0];
+    const fileKK  = this.formKK.files[0];
+    let errors = [];
+
+    if(!formData.get('setuju')){
+      errors.push({
+        index: `setuju`,
+        message: `setuju Belum terisi`
+      });
+      
+      this.setState({errorsForm: errors});
+
+      MySwal.fire({
+        icon: 'error',
+        title: 'Data tidak bisa diproses',
+        text: 'Harap menyetujui terlebih dahulu!'
+      });
+      return false;
+    }
+
+    ['Province','Cities','Kecamatan','Kelurahan'].map((arr) => {
+      let selected = eval(`selected${arr}`);
+      if(!selected.value){
+        errors.push({
+          index: `selected${arr}`,
+          message: `${arr} Belum terisi`
+        });
+      }
+    });
+
+    if(!fileKTP){
+      errors.push({
+        index: 'foto_ktp',
+        message: `foto ktp belum terisi`
+      });
+    }
+    else if(fileKTP && fileKTP.size > 2048000){
+      errors.push({
+        index: 'foto_ktp',
+        message: `ukuran foto ktp melebihi batas dari 2MB`
+      });
+    }
+
+    if(!fileKK){
+      errors.push({
+        index: 'foto_kk',
+        message: `foto kk belum terisi`
+      });
+    }
+    else if(fileKK && fileKK.size > 2048000){
+      errors.push({
+        index: 'foto_ktp',
+        message: `ukuran foto kk melebihi batas dari 2MB`
+      });
+    }
+
+    if(!formData.get('gender')){
+      errors.push({
+        index: 'gender',
+        message: `gender belum terisi`
+      });
+    }
+
+    if(!formData.get('alasan')){
+      errors.push({
+        index: 'alasan',
+        message: `alasan belum terisi`
+      });
+    }
+
+    if(formData.get('alasan') && (formData.get('alasan') == '3' && !formData.get('alasan_text'))){
+      errors.push({
+        index: 'alasan',
+        message: `alasan lainnya perlu diisi jika terpilih`
+      });
+    }
+
+    for (let [key, value] of formData.entries()) {
+      if(!value && key != 'alasan_text'){
+        errors.push({
+          index: key,
+          message: `${key.replace(/_/g," ")} belum terisi`
+        });
+      }
+
+      if(key == 'umur' && value < 25){
+        errors.push({
+          index: key,
+          message: `${key.replace(/_/g," ")} minimal berumur 25 tahun`
+        });
+      }
+    }
+
+    this.setState({errorsForm: errors});
+
+    if(errors){
+      MySwal.fire({
+        icon: 'warning',
+        title: 'Data Belum Lengkap!',
+        text: 'Harap Perhatikan kembali isian anda!'
+      });
+    }else{
+      this.mockProcess(formData);
+    }
+  }
+
+  mockProcess(formState){
+    // console.log('hhheee', random(1, 5));
+  }
+
   render() {
+    let { errorsForm } = this.state;
+    let statusAge    = errorsForm.find(o => { return o.index === 'umur'});
+    let statusAlasan = errorsForm.find(o => { return o.index === 'alasan'});
+    let statusSetuju = errorsForm.find(o => { return o.index === 'setuju'});
+    let statusKTP    = errorsForm.find(o => { return o.index === 'foto_ktp'});
+
     return (
       <div className="main-content">
         <section className="section">
@@ -134,56 +263,91 @@ class FormView extends React.Component {
           <Row>
             <Col className="pe-0">
               <Card>
-                <Card.Body>
-                  <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form onSubmit={this.handleSubmit.bind(this)}>
+                  <Card.Body>
+                    <Form.Group className="mb-3">
                       <Form.Label>Nama</Form.Label>
-                      <Form.Control type="text" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <Form.Control name="nama" type="text" placeholder="Masukan nama" />
+                      {errorsForm.find(o => { return o.index === 'nama'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian nama belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>NIK</Form.Label>
-                      <Form.Control type="number" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <Form.Control name="NIK" type="number" placeholder="Masukan Nomor Induk Kependudukan" />
+                      {errorsForm.find(o => { return o.index === 'NIK'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian NIK belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Nomor Kartu Keluarga</Form.Label>
-                      <Form.Control type="number" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <Form.Control name="NKK" type="number" placeholder="Masukan Nomor Kartu Keluarga" />
+                      {errorsForm.find(o => { return o.index === 'NKK'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian nomor kartu keluarga belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
+                      <label for="formKTP" class="form-label">Foto KTP</label>
+                      <input ref={ref => this.formKTP = ref} class="form-control" name="foto_ktp" type="file" id="formKTP" />
+                      {statusKTP && (
+                        <Form.Text className="text-danger">
+                          Data isian {statusKTP.message}
+                        </Form.Text>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <label for="formKK" class="form-label">Foto Kartu Keluarga</label>
+                      <input ref={ref => this.formKK = ref} class="form-control" name="foto_kk" type="file" id="formKK" />
+                      {errorsForm.find(o => { return o.index === 'foto_kk'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian foto KK belum terisi.
+                        </Form.Text>
+                      )}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
                       <Form.Label>Umur</Form.Label>
-                      <Form.Control type="number" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <Form.Control name="umur" type="number" placeholder="Masukan Umur"/>
+                      {statusAge && (
+                        <Form.Text className="text-danger">
+                          Data Isian {statusAge.message}
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Jenis Kelamin</Form.Label>
                       <Row>
                         <Col>
                           <Form.Check
-                          inline
-                          label="Laki-Laki"
-                          name="gender"
-                          type="radio"
-                        />
-                        <Form.Check
-                          inline
-                          label="Perempuan"
-                          name="gender"
-                          type="radio"
-                        />
+                            inline
+                            label="Laki-Laki"
+                            name="gender"
+                            value="male"
+                            type="radio"
+                            defaultChecked={false}
+                          />
+                          <Form.Check
+                            inline
+                            label="Perempuan"
+                            name="gender"
+                            value="female"
+                            type="radio"
+                            defaultChecked={false}
+                          />
                         </Col>
                       </Row>
+                      {errorsForm.find(o => { return o.index === 'gender'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian Jenis kelamin belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Provinsi</Form.Label>
                       <Select 
                         isClearable 
@@ -191,9 +355,14 @@ class FormView extends React.Component {
                         value={this.state.selectedProvince.id}
                         onChange={this.handleProvinceChange.bind(this)}
                       />
+                      {errorsForm.find(o => { return o.index === 'selectedProvince'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian Provinsi belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
                     {this.state.selectedProvince.value && (
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Group className="mb-3">
                         <Form.Label>Kab/Kota</Form.Label>
                         <Select
                           isClearable
@@ -201,10 +370,15 @@ class FormView extends React.Component {
                           value={this.state.selectedCities.id}
                           onChange={this.handleCityChange.bind(this)}
                         />
+                        {errorsForm.find(o => { return o.index === 'selectedCities'}) && (
+                          <Form.Text className="text-danger">
+                            Data isian Kota belum terisi.
+                          </Form.Text>
+                        )}
                       </Form.Group>
                     )}
                     {this.state.selectedCities.value && (
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Group className="mb-3">
                         <Form.Label>Kecamatan</Form.Label>
                         <Select
                           isClearable 
@@ -212,10 +386,15 @@ class FormView extends React.Component {
                           value={this.state.selectedKecamatan.id}
                           onChange={this.handleKecamatanChange.bind(this)}
                         />
+                        {errorsForm.find(o => { return o.index === 'selectedKecamatan'}) && (
+                          <Form.Text className="text-danger">
+                            Data isian Kecamatan belum terisi.
+                          </Form.Text>
+                        )}
                       </Form.Group>
                     )}
                     {this.state.selectedKecamatan.value && (
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Group className="mb-3">
                         <Form.Label>Kelurahan/Desa</Form.Label>
                         <Select 
                           isClearable 
@@ -223,63 +402,109 @@ class FormView extends React.Component {
                           value={this.state.selectedKelurahan.id}
                           onChange={this.handleKelurahanChange.bind(this)}
                         />
+                        {errorsForm.find(o => { return o.index === 'selectedKelurahan'}) && (
+                          <Form.Text className="text-danger">
+                            Data isian Kelurahan belum terisi.
+                          </Form.Text>
+                        )}
                       </Form.Group>
                     )}
                     <Row>
                       <Col md={6}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3">
                           <Form.Label>RT</Form.Label>
-                          <Form.Control type="text" placeholder="Enter email" />
+                          <Form.Control name="RT" type="text" placeholder="Masukan Data RT" />
+                          {errorsForm.find(o => { return o.index === 'RT'}) && (
+                            <Form.Text className="text-danger">
+                              Data isian RT belum terisi.
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3">
                           <Form.Label>RW</Form.Label>
-                          <Form.Control type="text" placeholder="Enter email" />
+                          <Form.Control name="RW" type="text" placeholder="Masukan Data RW" />
+                          {errorsForm.find(o => { return o.index === 'RW'}) && (
+                            <Form.Text className="text-danger">
+                              Data isian RW belum terisi.
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                    <Form.Group className="mb-3">
                       <Form.Label>Alamat</Form.Label>
-                      <Form.Control as="textarea" rows={5} />
+                      <Form.Control name="alamat" as="textarea" maxLength={255} rows={5} />
+                      {errorsForm.find(o => { return o.index === 'RW'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian Alamat belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Penghasilan Sebelum Pandemi</Form.Label>
-                      <Form.Control type="number" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <InputGroup className="mb-2">
+                        <InputGroup.Text>Rp</InputGroup.Text>
+                        <FormControl name="penghasilan_sebelum_pandemi" type="number" placeholder="Masukan Nilai Penghasilan" />
+                      </InputGroup>
+                      {errorsForm.find(o => { return o.index === 'penghasilan_sebelum_pandemi'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian Penghasilan Sebelum Pandemi belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Penghasilan Setelah Pandemi</Form.Label>
-                      <Form.Control type="number" placeholder="Enter email" />
-                      <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                      </Form.Text>
+                      <InputGroup className="mb-2">
+                        <InputGroup.Text>Rp</InputGroup.Text>
+                        <FormControl name="penghasilan_setelah_pandemi" type="number" placeholder="Masukan Nilai Penghasilan" />
+                      </InputGroup>
+                      {errorsForm.find(o => { return o.index === 'penghasilan_setelah_pandemi'}) && (
+                        <Form.Text className="text-danger">
+                          Data isian Penghasilan Setelah Pandemi belum terisi.
+                        </Form.Text>
+                      )}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                       <Form.Label>Alasan Membutuhkan Bantuan</Form.Label>
-                      <Select options={[
-                          { value: 'chocolate', label: 'Chocolate' },
-                          { value: 'strawberry', label: 'Strawberry' },
-                          { value: 'vanilla', label: 'Vanilla' }
-                        ]}
-                      />
+                      {['Kehilangan pekerjaan','Kepala keluarga terdampak atau korban Covid-19','Tergolong fakir/miskin semenjak sebelum Covid-19'].map((type, index) => (
+                        <Form.Check
+                          label={type}
+                          name="alasan"
+                          value={index}
+                          type="radio"
+                        />
+                      ))}
+                      <Form.Check type="radio">
+                        <Form.Check.Input value={3} name="alasan" type="radio" />
+                        <Form.Control name="alasan_text" type="text" size="sm" placeholder="Lainnya" style={{width: '50%'}} />
+                      </Form.Check>
+                      {statusAlasan && (
+                        <Form.Text className="text-danger">
+                          Data isian {statusAlasan.message}.
+                        </Form.Text>
+                      )}
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                      <Form.Check type="checkbox" label="Saya menyatakan bahwa data yang diisikan adalah benar dan siap mempertanggungjawabkan apabila ditemukan ketidaksesuaian dalam data tersebut." />
+                      <Form.Check 
+                        name="setuju" 
+                        type="checkbox" 
+                        label="Saya menyatakan bahwa data yang diisikan adalah benar dan siap mempertanggungjawabkan apabila ditemukan ketidaksesuaian dalam data tersebut."
+                        style={{color: statusSetuju ? '#fc544b' : '#212529'}}
+                      />
                     </Form.Group>
-                  </Form>
-                </Card.Body>
-                <hr/>
-                <Card.Footer>
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <Link to={"/"}><Button variant="light">Back</Button></Link> {' '}
-                    <Button variant="danger" type="submit">
-                      Kirim data
-                    </Button>
-                  </div>
-                </Card.Footer>
+                  </Card.Body>
+                  <hr/>
+                  <Card.Footer>
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <Link to={"/"}><Button variant="light">Back</Button></Link> {' '}
+                      <Button variant="danger" type="submit">
+                        Kirim data
+                      </Button>
+                    </div>
+                  </Card.Footer>
+                </Form>
               </Card>
             </Col>
           </Row>
