@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import './Formulir.css';
 import { random } from 'lodash';
-import { Row, Col, Card, Button, Form, Table, InputGroup, FormControl, Modal } from 'react-bootstrap';
+import { Row, Col, Card, Button, Form, Table, InputGroup, FormControl, Modal, Alert } from 'react-bootstrap';
 
 const MySwal = withReactContent(Swal);
 
@@ -330,6 +331,12 @@ class FormView extends React.Component {
               column: 'Alamat',
               data: result.find(o => { return o.column === 'alamat'}).data
             },{
+              column: 'RT',
+              data: result.find(o => { return o.column === 'RT'}).data
+            },{
+              column: 'RW',
+              data: result.find(o => { return o.column === 'RW'}).data
+            },{
               column: 'Penghasilan sebelum pandemi',
               data: result.find(o => { return o.column === 'penghasilan sebelum pandemi'}).data
             },{
@@ -360,6 +367,23 @@ class FormView extends React.Component {
     let statusAlasan = errorsForm.find(o => { return o.index === 'alasan'});
     let statusSetuju = errorsForm.find(o => { return o.index === 'setuju'});
     let statusKTP    = errorsForm.find(o => { return o.index === 'foto_ktp'});
+
+    let dataNama = tableData.find(o => { return o.column === 'Nama'});
+    let dataUmur = tableData.find(o => { return o.column === 'Umur'});
+    let dataJK   = tableData.find(o => { return o.column === 'Jenis Kelamin'});
+    let dataNIK  = tableData.find(o => { return o.column === 'NIK'});
+    let dataNKK  = tableData.find(o => { return o.column === 'Nomor Kartu Keluarga'});
+    let dataProv = tableData.find(o => { return o.column === 'Provinsi'});
+    let dataKota = tableData.find(o => { return o.column === 'Kota'});
+    let dataKeca = tableData.find(o => { return o.column === 'Kecamatan'});
+    let dataKelu = tableData.find(o => { return o.column === 'Desa/Kelurahan'});
+    let dataAlamat = tableData.find(o => { return o.column === 'Alamat'});
+    let dataRT = tableData.find(o => { return o.column === 'RT'});
+    let dataRW = tableData.find(o => { return o.column === 'RW'});
+
+    let dataPengSebelum = tableData.find(o => { return o.column === 'Penghasilan sebelum pandemi'});
+    let dataPengSesudah = tableData.find(o => { return o.column === 'Penghasilan seletah pandemi'});
+    let dataAlasan = tableData.find(o => { return o.column === 'Alasan membutuhkan bantuan'});
 
     return (
       <>
@@ -414,7 +438,7 @@ class FormView extends React.Component {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <label htmlFor="formKTP" className="form-label">Foto KTP</label>
-                        <input ref={ref => this.formKTP = ref} className="form-control" name="foto_ktp" type="file" id="formKTP" />
+                        <input ref={ref => this.formKTP = ref} className="form-control" name="foto_ktp" type="file" accept="image/*" id="formKTP" />
                         {statusKTP && (
                           <Form.Text className="text-danger">
                             Data isian {statusKTP.message}
@@ -423,7 +447,7 @@ class FormView extends React.Component {
                       </Form.Group>
                       <Form.Group className="mb-3">
                         <label htmlFor="formKK" className="form-label">Foto Kartu Keluarga</label>
-                        <input ref={ref => this.formKK = ref} className="form-control" name="foto_kk" type="file" id="formKK" />
+                        <input ref={ref => this.formKK = ref} className="form-control" name="foto_kk" type="file" accept="image/*" id="formKK" />
                         {errorsForm.find(o => { return o.index === 'foto_kk'}) && (
                           <Form.Text className="text-danger">
                             Data isian foto KK belum terisi.
@@ -631,35 +655,88 @@ class FormView extends React.Component {
           </section>
         </div>
 
-        <Modal size="lg" show={this.state.show}>
+        <Modal size="lg" show={this.state.show} className="bg-smoke">
           <Modal.Header>
-            <Modal.Title>Review Data</Modal.Title>
+            <Row>
+              <Col md={12}>
+                <Modal.Title>Detail Permohonan Bansos</Modal.Title>
+              </Col>
+
+              <Col md={12}>
+                <Alert variant='success'>
+                  Sebelum Dikirim periksa kembali data anda dengan seksama. Pastikan alamat tidak keliru
+                </Alert>
+              </Col>
+            </Row>
           </Modal.Header>
-          <Modal.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Kolom</th>
-                  <th>Data Input</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((res, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{index+=1}</td>
-                      <td>{res.column.toLowerCase().replace(/(?<= )[^\s]|^./g, a => a.toUpperCase())}</td>
-                      <td>{(res.column === 'Foto KTP' || res.column === 'Foto KK') ? (<img src={res.data} width="300" />) : res.data}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
+          <Modal.Body className="bg-smoke">
+            <Card className="bg-smoke">
+              <Card.Title className="greenText">Identitas Pemohon</Card.Title>
+              <Row className="shadow-sm cardBody">
+                <Col xs={4}>
+                  <h6 className="greenText">Nama Pemohon</h6>
+                  <p>{dataNama ? dataNama.data : '-'}</p>
+                  <h6 className="greenText">Umur</h6>
+                  <p>{dataUmur ? dataUmur.data : '-'}</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Jenis Kelamin</h6>
+                  <p>{dataJK ? dataJK.data : '-'}</p>
+                  <h6 className="greenText">NIK</h6>
+                  <p>{dataNIK ? dataNIK.data : '-'}</p>
+                  <h6 style={{color:'green'}}>Nomor KK</h6>
+                  <p>{dataNKK ? dataNKK.data : '-'}</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Kartu KTP</h6>
+                  <div><img className="img-thumbnail border-gr" src={this.state.image_KTP} width="150" /></div>
+                </Col>
+              </Row>
+            </Card>
+            <Card className="bg-smoke">
+              <Card.Title className="greenText">Alamat Pemohon</Card.Title>
+              <Row className="shadow-sm cardBody">
+                <Col xs={4}>
+                  <h6 className="greenText">Provinsi</h6>
+                  <p>{dataProv ? dataProv.data : '-'}</p>
+                  <h6 className="greenText">Kota / Kabupaten</h6>
+                  <p>{dataKota ? dataKota.data : '-'}</p>
+                  <h6 className="greenText">Kecamatan</h6>
+                  <p>{dataKeca ? dataKeca.data : '-'}</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Kelurahan/Desa</h6>
+                  <p>{dataKelu ? dataKelu.data : '-'}</p>
+                  <h6 className="greenText">RT/RW</h6>
+                  <p>{dataRT ? dataRT.data : '-'} / {dataRW ? dataRW.data : '-'}</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Alamat</h6>
+                  <p>{dataAlamat ? dataAlamat.data : '-'}</p>
+                </Col>
+              </Row>
+            </Card>
+            <Card className="bg-smoke">
+              <Card.Title className="greenText">Kondisi Keuangan Pemohon</Card.Title>
+              <Row className="shadow-sm cardBody">
+                <Col xs={4}>
+                  <h6 className="greenText">Penghasilan Sebelum Pandemi</h6>
+                  <p>Rp.{dataPengSebelum ? dataPengSebelum.data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") : '-'},-</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Penghasilan Sesudah Pandemi</h6>
+                  <p>Rp.{dataPengSesudah ? dataPengSesudah.data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") : '-'},-</p>
+                </Col>
+                <Col xs={4}>
+                  <h6 className="greenText">Alasan Membutuhkan Bantuan</h6>
+                  <p>{dataAlasan ? dataAlasan.data : '-'}</p>
+                </Col>
+              </Row>
+            </Card>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="danger" onClick={(res) => {this.setState({show: !res})}}>
-              Selesai
+          <Modal.Footer className="bg-smoke">
+            <Button variant="success" onClick={(res) => {this.setState({show: !res})}}>
+              Kirim
             </Button>
           </Modal.Footer>
         </Modal>
