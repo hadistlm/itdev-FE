@@ -2,23 +2,23 @@ import React from 'react';
 
 const routes = {
   DASHBOARD: {
-    path: '/',
+    path: '/itdev-FE',
     component: React.lazy(() => import('../../Pages/Dashboard/Dashboard'))
   },
   FORM:{
-    path: '/formulir',
+    path: '/itdev-FE/formulir',
     component: React.lazy(() => import('../../Pages/Formulir/FormView'))
   },
   TESTINGMUI: {
-    path: '/testing/mui',
+    path: '/itdev-FE/testing/mui',
     component: React.lazy(() => import('../../Pages/Testing/TestingMui'))
   },
   TESTINGAG: {
-    path: '/testing/ag',
+    path: '/itdev-FE/testing/ag',
     component: React.lazy(() => import('../../Pages/Testing/TestingAg'))
   },
   TESTINGHANDSON: {
-    path: '/testing/handson',
+    path: '/itdev-FE/testing/handson',
     component: React.lazy(() => import('../../Pages/Testing/TestingHandson'))
   },
 };

@@ -7,12 +7,12 @@ export const Data = {
         name: 'Dashboard',
         active: true,
         icon: 'fas fa-tachometer-alt',
-        url: "/"
+        url: "/itdev-FE"
     },
     {
         name: 'Formulir Data',
         active: true,
         icon: 'fab fa-wpforms',
-        url: "/formulir"
+        url: "/itdev-FE/formulir"
     }]
 };

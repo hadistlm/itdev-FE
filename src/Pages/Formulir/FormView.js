@@ -32,7 +32,7 @@ class FormView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
+    fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
       .then(response => response.json())
       .then(result => {
         const remap = result.map(list => ({
@@ -47,14 +47,21 @@ class FormView extends React.Component {
     if(selected){
       this.setState({selectedProvince: {id: selected.id, value: selected.value}});
 
-      fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selected.value}.json`)
+      fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selected.value}.json`)
         .then(response => response.json())
         .then(result => {
           const remap = result.map(list => ({
             "value" : list.id,
             "label" : list.name
           }));
-          this.setState({kota: remap});
+          this.setState({
+            kota: remap,
+            selectedCities: {id:null, value: null},
+            selectedKecamatan: {id:null, value: null},
+            selectedKelurahan: {id:null, value: null},
+            kecamatan : [],
+            kelurahan : [],
+          });
         });
     }else{
       this.setState({
@@ -73,14 +80,19 @@ class FormView extends React.Component {
     if(selected){
       this.setState({selectedCities: {id: selected.id, value: selected.value}});
 
-      fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${selected.value}.json`)
+      fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${selected.value}.json`)
         .then(response => response.json())
         .then(result => {
           const remap = result.map(list => ({
             "value" : list.id,
             "label" : list.name
           }));
-          this.setState({kecamatan: remap});
+          this.setState({
+            selectedKecamatan: {id:null, value: null},
+            selectedKelurahan: {id:null, value: null},
+            kecamatan: remap,
+            kelurahan : []
+          });
         });
     }else{
       this.setState({
@@ -97,14 +109,17 @@ class FormView extends React.Component {
     if(selected){
       this.setState({selectedKecamatan: {id: selected.id, value: selected.value}});
 
-      fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${selected.value}.json`)
+      fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${selected.value}.json`)
         .then(response => response.json())
         .then(result => {
           const remap = result.map(list => ({
             "value" : list.id,
             "label" : list.name
           }));
-          this.setState({kelurahan: remap});
+          this.setState({
+            selectedKelurahan: {id:null, value: null},
+            kelurahan: remap
+          });
         });
     }else{
       this.setState({

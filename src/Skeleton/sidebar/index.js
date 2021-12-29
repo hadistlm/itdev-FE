@@ -16,10 +16,10 @@ export class SideBar extends Component {
       <div className="main-sidebar">
         <aside id="sidebar-wrapper">
           <div className="sidebar-brand">
-            <Link to="/"> {config.appName} </Link>{" "}
+            <Link to="/itdev-FE"> {config.appName} </Link>{" "}
           </div>{" "}
           <div className="sidebar-brand sidebar-brand-sm">
-            <Link to="/"> {config.appInitial} </Link>{" "}
+            <Link to="/itdev-FE"> {config.appInitial} </Link>{" "}
           </div>{" "}
           <ul className="sidebar-menu mb-5">
             {" "}
